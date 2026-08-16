@@ -269,6 +269,32 @@ window.__imgfall=function(el){
 </script>
 <!-- phone-shell screen mode: only active when this page is inside phone.html -->
 <style>
+/* Bottle cut-outs are tall PNGs in a 226x196 card; cover crops them to a slice.
+   Contain shows the whole bottle inside the black. Applies everywhere, not just the shell. */
+.bcardx .shot .imgslot img{object-fit:contain!important;padding:14px 12px}
+</style>
+<script>
+// A contained bottle no longer covers the slot, so the wanted-filename label would
+// show through. Hide it only once the image has really loaded; an empty slot still
+// shows the filename, which is the point of it.
+(function(){
+  function sweep(){
+    var slots = document.querySelectorAll('.bcardx .shot .imgslot');
+    for (var i = 0; i < slots.length; i++){
+      (function(slot){
+        var img = slot.querySelector('img'), fn = slot.querySelector('.fn');
+        if (!img || !fn) return;
+        function upd(){ if (img.complete && img.naturalWidth > 0) fn.style.display = 'none'; }
+        img.addEventListener('load', upd);
+        upd();
+      })(slots[i]);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sweep);
+  else sweep();
+})();
+</script>
+<style>
 html.inphone,html.inphone body{height:100%;margin:0;padding:0;overflow:hidden;background:#F5F0EB}
 html.inphone .page-head,html.inphone .notes,html.inphone .col-cap,html.inphone .col-sub{display:none!important}
 html.inphone .stage{display:block!important;gap:0!important;margin:0!important;
@@ -285,6 +311,14 @@ html.inphone .status .sbr{display:flex;align-items:center;gap:5px}
 html.inphone .status svg{display:block;fill:#fff}
 html.inphone .abL{cursor:pointer}
 html.inphone-plain body{margin:0}
+/* a list row that has its own detail screen in this file */
+html.inphone .sy-tap{cursor:pointer}
+html.inphone .sy-tap:active{background:rgba(240,61,77,.06)}
+html.inphone .sy-tap .ename,html.inphone .sy-tap .rname,
+html.inphone .sy-tap .pname,html.inphone .sy-tap .n{color:#9B1B1B}
+html.inphone .sy-go{display:inline-flex;align-items:center;gap:5px;margin-top:9px;
+  font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#9B1B1B;
+  border:1px solid rgba(155,27,27,.4);border-radius:999px;padding:4px 10px;line-height:1}
 </style>
 <script>
 (function(){
@@ -352,6 +386,39 @@ html.inphone-plain body{margin:0}
           if (dd) dd.classList.remove('open');
         }
       });
+    }
+
+    // Rows whose detail screen lives in this same file become tappable and get a marker.
+    // Matched on the exact title only (or title + ", place"), never fuzzily.
+    function norm(s){ return s.replace(/\s+/g, ' ').trim().toLowerCase(); }
+    var details = [];
+    for (var k = 0; k < cols.length; k++){
+      if (k === want) continue;
+      var h1 = cols[k].querySelector('h1');
+      if (h1 && norm(h1.textContent).length >= 3) details.push({ i: k, t: norm(h1.textContent) });
+    }
+    if (details.length){
+      var names = cols[want].querySelectorAll('.ename,.rname,.pname,.n');
+      for (var q = 0; q < names.length; q++){
+        var nm = names[q], txt = norm(nm.textContent), hit = null;
+        for (var z = 0; z < details.length; z++){
+          var T = details[z].t;
+          if (txt === T || txt.indexOf(T + ',') === 0) { hit = details[z]; break; }
+        }
+        if (!hit) continue;
+        var row = nm.closest('.erow,.prow,.row,.srow,.lrow,.shopcard') || nm.parentElement;
+        row.classList.add('sy-tap');
+        var chip = document.createElement('span');
+        chip.className = 'sy-go';
+        chip.textContent = 'Open ›';
+        nm.parentElement.appendChild(chip);
+        (function(dest){
+          row.addEventListener('click', function(e){
+            if (e.target.closest('a')) return;             // real links still win
+            location.href = location.pathname + '?s=' + dest;
+          });
+        })(hit.i);
+      }
     }
 
     // The app bar's back chevron should actually go back.
