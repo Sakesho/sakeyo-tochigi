@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Where to drink it</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d131a; --ink:#101820; --cream:#F5F0EB; --cream-deep:#EDE6DD;
+    --crimson:#9B1B1B; --crimson-bright:#F03D4D;
+    --mute:#5F5E5A; --faint:#8A8880;
+    --hair:rgba(16,24,32,0.10); --hair-soft:rgba(16,24,32,0.06);
+    --sans:'Supreme',system-ui,sans-serif; --serif:'Sentient',Georgia,serif;
+    --pad:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+
+  .page-head{max-width:1000px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:760px}
+
+  .stage{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .col-sub{color:#8f8b85;font-size:12.5px;line-height:1.6;margin-bottom:14px;min-height:52px}
+
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  .pmast{padding:0 var(--pad) 22px}
+  .ovr{font-size:12px;color:rgba(255,255,255,.55);font-weight:500}
+  .pmast h2{font-family:var(--serif);font-weight:400;font-size:32px;line-height:36px;color:var(--cream);
+    margin-top:3px;letter-spacing:-.4px}
+  .pmast .sub{font-size:13px;line-height:18px;color:rgba(245,240,235,.5);margin-top:10px;max-width:310px}
+
+  .imgslot{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot .fn{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;color:rgba(16,24,32,.42);
+    text-align:center;padding:0 8px;line-height:12px;word-break:break-all}
+  .imgslot.dark{background:linear-gradient(150deg,#1d2429,#12171b)}
+  .imgslot.dark .fn{color:rgba(245,240,235,.42)}
+
+  /* filters */
+  .filters{display:flex;gap:7px;padding:16px var(--pad) 4px;overflow-x:auto;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .chip{font-size:12px;font-weight:500;letter-spacing:-.1px;white-space:nowrap;padding:7px 13px;
+    border:1px solid var(--hair);border-radius:20px;color:var(--mute)}
+  .chip.on{background:var(--ink);color:var(--cream);border-color:var(--ink);font-weight:600}
+
+  /* list rows */
+  .prow{display:flex;gap:13px;padding:15px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .pthumb{width:76px;height:76px;border-radius:3px;flex-shrink:0}
+  .pbody{flex:1;min-width:0}
+  .pkind{font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--mute)}
+  .pname{font-size:15px;font-weight:600;letter-spacing:-.25px;line-height:19px;margin-top:3px}
+  .pmeta{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:5px}
+  .ptags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;align-items:center}
+  .tag{font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;color:var(--mute);
+    border:1px solid var(--hair);border-radius:2px;padding:2px 6px}
+  .tag.p{color:var(--crimson);border-color:rgba(155,27,27,.28)}
+  .tag.warn{color:#8A6A20;border-color:rgba(138,106,32,.3)}
+
+  .ghead{display:flex;align-items:center;gap:12px;padding:26px var(--pad) 0}
+  .ghead .m{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);font-weight:600;white-space:nowrap}
+  .ghead .rule{flex:1;height:1px;background:var(--hair)}
+
+  /* ---------- DETAIL ---------- */
+  .cover{height:224px}
+  .dtitle{padding:0 var(--pad)}
+  .dtitle .where{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-top:20px}
+  .dtitle h1{font-family:var(--serif);font-weight:400;font-size:29px;line-height:33px;letter-spacing:-.4px;margin-top:9px}
+  .dtitle .by{font-size:11.5px;color:var(--faint);margin-top:12px}
+
+  .cta{margin:18px var(--pad) 0;display:flex;gap:9px}
+  .btn{flex:1;text-align:center;padding:13px 0;border-radius:3px;font-size:13.5px;font-weight:600}
+  .btn.p{background:var(--crimson);color:#fff}
+  .btn.s{border:1px solid var(--hair);color:var(--ink)}
+
+  .card{margin:20px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:15px}
+  .card .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:12px}
+  .card dl{display:grid;grid-template-columns:96px 1fr;gap:8px 12px;font-size:12.5px;line-height:17px}
+  .card dt{color:var(--faint)}
+  .card dd{color:var(--ink)}
+  .yes{color:#2F6B45;font-weight:600}
+  .no{color:var(--mute)}
+
+  h2.sh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:25px;margin:30px 0 0;
+    letter-spacing:-.3px;padding:0 var(--pad)}
+  .body{padding:0 var(--pad)}
+  .body p{font-size:15px;line-height:23px;margin-top:13px;letter-spacing:-.1px}
+  .body b{font-weight:600}
+
+  figure{margin-top:20px}
+  figure .imgslot{height:200px}
+  figcaption{font-size:11.5px;line-height:16px;color:var(--faint);padding:9px var(--pad) 0}
+
+  .order{padding:0 var(--pad);margin-top:8px}
+  .oitem{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--hair-soft)}
+  .oitem .b{width:5px;height:5px;border-radius:50%;background:var(--crimson);margin-top:8px;flex-shrink:0}
+  .oitem .t{font-size:14.5px;font-weight:600;letter-spacing:-.2px;line-height:19px}
+  .oitem .d{font-size:13px;line-height:18px;color:var(--mute);margin-top:4px}
+  .oitem .pr{font-size:11.5px;color:var(--faint);margin-top:5px}
+
+  .verdict{margin:24px var(--pad) 0;border-left:2px solid var(--crimson);padding:3px 0 3px 15px}
+  .verdict .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--crimson);font-weight:600}
+  .verdict p{font-size:15px;line-height:23px;margin-top:9px}
+
+  .sechead{display:flex;align-items:center;gap:12px;padding:30px var(--pad) 0}
+  .secovr{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .sechead .rule{flex:1;height:1px;background:var(--hair)}
+  .sectitle{font-size:21px;letter-spacing:-.4px;font-weight:600;padding:6px var(--pad) 0}
+
+  .lrow{display:flex;gap:12px;padding:13px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .lthumb{width:62px;height:50px;border-radius:3px;flex-shrink:0}
+  .lrow .n{font-size:14px;font-weight:600;letter-spacing:-.2px}
+  .lrow .m{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:3px}
+  .lkind{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--faint)}
+
+  .footer{padding:36px 0 20px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;padding:10px 0 18px;flex-shrink:0}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);display:flex;align-items:center;justify-content:center}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:1000px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#e9e6e1;margin:26px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:860px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+  .notes code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b9b4ad;
+    background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px}
+  .flag{border-left:2px solid var(--crimson-bright);padding:10px 0 10px 16px;margin:16px 0;max-width:860px;
+    font-size:13.5px;line-height:1.65;color:#d6d1ca}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Eat &amp; drink — list and venue review</h1>
+  <p>Review page follows the Kanazawa Shu Shu structure: header block, first impressions, what to order,
+     quality, experience, verdict. Some detail is invented for the mockup — flagged at the bottom.</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============ LIST ============ -->
+  <div class="col">
+    <div class="col-cap">1 · All places</div>
+    <div class="col-sub">Every row tells you what it costs and whether you need to book.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div>
+        </div>
+        <div class="pmast">
+          <div class="ovr">Tochigi</div>
+          <h2>Where to drink it</h2>
+          <div class="sub">Fourteen places, and you can eat very well in most of them for under ¥3,000.</div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="filters">
+          <span class="chip on">All</span>
+          <span class="chip">Sake bars</span>
+          <span class="chip">Kappō</span>
+          <span class="chip">Yuba</span>
+          <span class="chip">Izakaya</span>
+          <span class="chip">Gyoza</span>
+          <span class="chip">Ramen</span>
+          <span class="chip">Under ¥3,000</span>
+          <span class="chip">Walk in</span>
+          <span class="chip">Utsunomiya</span>
+        </div>
+
+        <div class="ghead"><div class="m">Sake bars and tasting counters</div><div class="rule"></div></div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-shimadaya-miyamirai.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-shimadaya-miyamirai.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Tasting counter · Utsunomiya</div>
+            <div class="pname">Shimadaya Saketen, Miya-Mirai</div>
+            <div class="pmeta">You can taste before you buy here. All 28 breweries in the prefecture are on the shelves, three glasses start at ¥1,200, and it's a minute from the station.</div>
+            <div class="ptags"><span class="tag p">From ¥1,200</span><span class="tag">Walk in</span><span class="tag">Until 20:30</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-yuzawaya-saketen.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-yuzawaya-saketen.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Shop counter · Yunishigawa</div>
+            <div class="pname">Yuzawaya Saketen</div>
+            <div class="pmeta">A liquor shop with about ten seats at the counter, so you can try things before you commit. Some of the bottles are made for this village and sold nowhere else.</div>
+            <div class="ptags"><span class="tag p">Under ¥2,000</span><span class="tag">Walk in</span><span class="tag warn">Closes 19:00</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-mushu-ogawa.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-mushu-ogawa.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Bar · Utsunomiya</div>
+            <div class="pname">Mushu OGAWA — Pipe no Kemuri</div>
+            <div class="pmeta">A proper sit-down bar that stays open late, and the only one in Tochigi with a national listing. Worth keeping for after dinner.</div>
+            <div class="ptags"><span class="tag p">¥3,000–4,000</span><span class="tag">Walk in</span></div>
+          </div>
+        </div>
+
+        <div class="ghead"><div class="m">Restaurants with good sake</div><div class="rule"></div></div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-ippachi.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-ippachi.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Kappō · Utsunomiya</div>
+            <div class="pname">Ippachi (一八)</div>
+            <div class="pmeta">The second-highest-rated Japanese restaurant in the prefecture, and dinner runs ¥2,000–3,000. You sit at the counter and watch it cooked in front of you. Book ahead.</div>
+            <div class="ptags"><span class="tag p">¥2,000–3,000</span><span class="tag warn">Book ahead</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-zen-nikko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-zen-nikko.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Yuba kappō · Nikko</div>
+            <div class="pname">Zen (全)</div>
+            <div class="pmeta">A whole meal built around yuba, the skin that forms on soy milk. Nikko's been making it for centuries and theirs is thicker than the Kyoto version. Dinner is ¥8,000–10,000; lunch is under ¥3,000 and just as good.</div>
+            <div class="ptags"><span class="tag p">Lunch ¥2,000–3,000</span><span class="tag warn">Book ahead</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-kumao-ujiie.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-kumao-ujiie.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Izakaya · Sakura</div>
+            <div class="pname">Kumaō</div>
+            <div class="pmeta">Grilled skewers and river fish, and they pour Senkin, which is brewed about ten minutes up the road. Two minutes from Ujiie station.</div>
+            <div class="ptags"><span class="tag p">¥3,000–4,000</span><span class="tag">Walk in</span></div>
+          </div>
+        </div>
+
+        <div class="ghead"><div class="m">Gyoza and ramen</div><div class="rule"></div></div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-masashi-gyoza.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-masashi-gyoza.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Gyoza · Utsunomiya</div>
+            <div class="pname">Masashi, Miyajima Honten</div>
+            <div class="pmeta">Gyoza and nothing else — no rice, and no beer at some branches. Thin skins, mostly cabbage, about ¥300 a plate. There's usually a queue and it moves fast.</div>
+            <div class="ptags"><span class="tag p">Under ¥1,000</span><span class="tag">Walk in</span><span class="tag warn">Queue</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/place-hinataya-sano.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-hinataya-sano.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ramen · Sano</div>
+            <div class="pname">Hinataya</div>
+            <div class="pmeta">The noodles here are still pressed by hand under a bamboo pole, which almost nobody does any more. Under ¥1,000 a bowl.</div>
+            <div class="ptags"><span class="tag p">Under ¥1,000</span><span class="tag">Walk in</span><span class="tag warn">Queue</span></div>
+          </div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL ============ -->
+  <div class="col">
+    <div class="col-cap">2 · Venue review</div>
+    <div class="col-sub">Shu Shu structure. Header block first, then first impressions, what to order, quality, experience, verdict.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <div class="cover imgslot dark">
+          <img src="images/place-shimadaya-cover.jpg" alt="" onerror="__imgfall(this)">
+          <span class="fn">place-shimadaya-cover.jpg</span>
+        </div>
+
+        <div class="dtitle">
+          <div class="where">Utsunomiya · Tochigi</div>
+          <h1>Shimadaya Saketen, Miya-Mirai</h1>
+          <div class="by">Reviewed August 2026</div>
+        </div>
+
+        <div class="cta">
+          <div class="btn p">Directions</div>
+          <div class="btn s">Add to trip</div>
+        </div>
+
+        <div class="card">
+          <div class="h">The details</div>
+          <dl>
+            <dt>Location</dt><dd>Utsunomiya Terrace 2F, Miya-Mirai 1-1, Utsunomiya</dd>
+            <dt>Phone</dt><dd>028-651-0141</dd>
+            <dt>Hours</dt><dd>11:00–20:30, daily</dd>
+            <dt>How to book</dt><dd>You don't. Walk in.</dd>
+            <dt>Seats</dt><dd>About 20, standing</dd>
+            <dt>English menu</dt><dd class="yes">Yes</dd>
+            <dt>English staff</dt><dd class="no">Sometimes</dd>
+            <dt>Cards</dt><dd class="yes">Yes, and IC</dd>
+          </dl>
+        </div>
+
+        <h2 class="sh">First impressions</h2>
+        <div class="body">
+          <p>Shimadaya is a liquor shop that lets you drink before you buy, which is rarer than it sounds. It's on the
+             second floor of the station building in Utsunomiya, about a minute from the platform. There's a counter
+             running down one side and a wall of fridges down the other, and the first thing most people do is stand
+             there working out whether they're allowed to open something.</p>
+          <p>You are. Any bottle with a small tag on it can be opened at the counter, and they'll pour you a measure of
+             it. The room is bright and modern, which is deliberate — the prefecture's old tasting room was a wooden
+             building open two hours an evening and hardly anybody went. This one opens at eleven and runs until
+             8:30 at night, every day of the week.</p>
+          <p>The staff are shop staff rather than bartenders, and they're the useful kind: ask what's drinking well
+             this month and you'll get a straight answer rather than whatever they're trying to shift.</p>
+        </div>
+
+        <figure>
+          <div class="imgslot">
+            <img src="images/place-shimadaya-counter.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">place-shimadaya-counter.jpg</span>
+          </div>
+          <figcaption>The counter with the fridges behind. Has to read as shop first, bar second. Landscape.</figcaption>
+        </figure>
+
+        <h2 class="sh">What to order</h2>
+        <div class="body">
+          <p>Everything on the shelves is from Tochigi. All twenty-eight breweries in the prefecture are here, along with
+             about a hundred local shochu, wine, liqueurs and beers. There's no Juyondai, no Jikon, nothing from
+             Yamagata or Niigata — and that's the point. Most of what's in this room you can't buy at home.</p>
+        </div>
+        <div class="order">
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">The three-glass set</div>
+            <div class="d">Three Tochigi junmai chosen for you, and the cheapest way to work out what you like. Tell
+               them whether you lean dry or sweet and leave the rest to them.</div>
+            <div class="pr">From ¥1,200</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Senkin, three ways</div>
+            <div class="d">Classic, Modern and whatever seasonal bottle is open, lined up together. It's one brewery
+               making sake three different ways, and the difference is obvious even if you've never done this
+               before.</div>
+            <div class="pr">¥1,300</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Arabashiri, nakadori, seme</div>
+            <div class="d">When sake is pressed it comes off in three stages, and here you can try all three next to
+               each other, 60ml at a time. The first run is rough and lively, the middle is the part that normally
+               gets bottled on its own, and the last is dry and a bit hard. Nowhere else in Tochigi lets you do
+               this.</div>
+            <div class="pr">Seasonal — Jan to Mar</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">The server</div>
+            <div class="d">Thirty-two more bottles on a coin-operated machine along the wall. This is where to spend
+               money on the ones you'd never risk a whole bottle of — the ¥4,000 daiginjo, the cloudy nigori, the
+               aged one that smells like soy sauce.</div>
+            <div class="pr">¥300–600 a pour</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Snacks</div>
+            <div class="d">Cheese cured in sake lees, which is salty and rich and goes with almost anything on the
+               shelves. Order it with something aged.</div>
+            <div class="pr">¥300–500</div>
+          </div></div>
+        </div>
+
+        <h2 class="sh">Food and drink quality</h2>
+        <div class="body">
+          <p>The sake is looked after, which matters more than it sounds like it should. Everything's refrigerated,
+             seasonal bottles turn up when they're released rather than three months later, and somebody in the room
+             knows which of the twenty-eight breweries is drinking well at the moment.</p>
+          <p>The food is bar snacks and doesn't pretend otherwise. Nobody's coming here to eat, and the menu knows it.</p>
+          <p>What the place is really good at is letting you compare things. The same brewery made two ways, the same
+             tank pressed at different stages, the same rice with different water. Three glasses side by side will
+             teach you more in twenty minutes than three bottles will over three nights.</p>
+        </div>
+
+        <figure>
+          <div class="imgslot">
+            <img src="images/place-shimadaya-flight.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">place-shimadaya-flight.jpg</span>
+          </div>
+          <figcaption>Three glasses on the counter, bottles behind. The comparison is the product. Landscape.</figcaption>
+        </figure>
+
+        <h2 class="sh">What it's like</h2>
+        <div class="body">
+          <p>It's mostly locals stopping in before a train, plus a few people who've made a point of coming. There's a
+             map of the prefecture's breweries on the wall and it's worth a minute of your time, because it shows you
+             how close together everything you're drinking actually is.</p>
+          <p>It's standing room for about twenty, so you end up shoulder to shoulder with somebody whether you planned
+             to or not. Nobody's going to lecture you. Ask what something is and you'll get an answer; ask what
+             they'd drink and you'll get a better one.</p>
+          <p>The easiest way to use it is to turn up around six, work out what you like over three or four glasses,
+             buy a couple of bottles on the way out and get your train.</p>
+        </div>
+
+        <div class="verdict">
+          <div class="h">Verdict</div>
+          <p>The best ¥1,200 you can spend in Tochigi. Come here on your first evening and you'll know what to order
+             everywhere else you go.</p>
+        </div>
+
+        <div class="sechead"><div class="secovr">Nearby</div><div class="rule"></div></div>
+        <div class="sectitle">Where to go next</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/place-masashi-gyoza.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-masashi-gyoza.jpg</span></div>
+          <div><div class="lkind">Eat · 10 min</div><div class="n">Masashi, Miyajima Honten</div>
+            <div class="m">Gyoza at about ¥300 a plate, and nothing else on the menu.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/place-mushu-ogawa.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-mushu-ogawa.jpg</span></div>
+          <div><div class="lkind">Drink · 15 min</div><div class="n">Mushu OGAWA</div>
+            <div class="m">A proper bar if you want to sit down and make a night of it.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-senkin.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-senkin.jpg</span></div>
+          <div><div class="lkind">Brewery · 30 min by train</div><div class="n">Senkin, Sakura</div>
+            <div class="m">Thirty minutes by train. If the three-way set won you over, go and see where it's made.</div></div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <div class="flag"><b>Invented for the mockup:</b> the phone number, the English menu and card lines, all prices
+     except the ¥1,200 entry set, the snack list, and the description of the room's interior. <b>Real:</b> the
+     address, 11:00–20:30 daily, all 28 breweries plus around 100 other local drinks, the 32-bottle server, the
+     three-glass set from ¥1,200, and the arabashiri/nakadori/seme tasting.</div>
+
+  <h3>The review template — seven blocks</h3>
+  <ul>
+    <li><b>1 Cover</b>, 390 × 224.</li>
+    <li><b>2 Title</b> — area, name, review date. The date matters: it tells the reader how stale this might be.</li>
+    <li><b>3 Actions</b> — Directions or Book, plus Add to trip.</li>
+    <li><b>4 The details</b> — location, phone, hours, how to book, seats, English menu, English staff, cards.
+        Same eight fields every time, so people learn where to look.</li>
+    <li><b>5 First impressions</b> — what it looks like walking in, and how it works. Three paragraphs.</li>
+    <li><b>6 What to order</b> — the heart of it. Named items, what they are, what to drink with them, price.</li>
+    <li><b>7 Quality, experience, verdict</b> — short. The verdict is two sentences and should be usable on its own.</li>
+  </ul>
+
+  <h3>Rules for writing these</h3>
+  <ul>
+    <li><b>Say what isn't there.</b> "No rice, no beer" and "nothing from Niigata" tell a reader more than praise does.</li>
+    <li><b>Price every recommendation.</b> A dish without a number is half an answer.</li>
+    <li><b>The verdict must be one idea.</b> If it needs a paragraph, the review hasn't decided what it thinks.</li>
+    <li><b>No adjectives doing the work of facts.</b> Not "an incredible selection" — twenty-eight breweries.</li>
+  </ul>
+
+  <h3>Images</h3>
+  <ul>
+    <li>List thumbnails: <code>place-&lt;slug&gt;.jpg</code>, 76 × 76 square.</li>
+    <li>Review cover: <code>place-&lt;slug&gt;-cover.jpg</code>, 390 × 224.</li>
+    <li>Two inline: the room, and the thing you should order. 390 × 200.</li>
+  </ul>
+</div>
+
+
+<script>
+window.__imgfall=function(el){
+  var exts=['.jpg','.jpeg','.png','.webp','.JPG','.JPEG','.PNG','.WEBP'];
+  var src=el.getAttribute('src');
+  var base=src.replace(/\.[A-Za-z]+$/,'');
+  var i=parseInt(el.dataset.try||'0',10);
+  while(i<exts.length && base+exts[i]===src){i++;}
+  if(i<exts.length){el.dataset.try=i+1;el.src=base+exts[i];return;}
+  el.remove();
+};
+</script>
+</body>
+</html>

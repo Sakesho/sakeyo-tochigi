@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Hot water, warm sake</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d131a; --ink:#101820; --cream:#F5F0EB; --cream-deep:#EDE6DD;
+    --crimson:#9B1B1B; --crimson-bright:#F03D4D;
+    --mute:#5F5E5A; --faint:#8A8880;
+    --hair:rgba(16,24,32,0.10); --hair-soft:rgba(16,24,32,0.06);
+    --sans:'Supreme',system-ui,sans-serif; --serif:'Sentient',Georgia,serif;
+    --pad:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+
+  .page-head{max-width:900px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:720px}
+
+  .stage{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  /* image slots */
+  .imgslot{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot .fn{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;color:rgba(16,24,32,.42);
+    text-align:center;padding:0 8px;line-height:12px;word-break:break-all}
+  .imgslot.dark{background:linear-gradient(150deg,#1d2429,#12171b)}
+  .imgslot.dark .fn{color:rgba(245,240,235,.42)}
+
+  /* article */
+  .lede{background:var(--black);padding:0 var(--pad) 26px}
+  .kick{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,235,.5);font-weight:600}
+  .lede h1{font-family:var(--serif);font-weight:400;font-size:33px;line-height:37px;color:var(--cream);
+    margin-top:8px;letter-spacing:-.4px}
+  .lede .sub{font-size:14px;line-height:20px;color:rgba(245,240,235,.62);margin-top:12px}
+  .lede .by{font-size:11.5px;color:rgba(245,240,235,.42);margin-top:16px;letter-spacing:.3px}
+
+  .cover{height:230px}
+
+  .body{padding:0 var(--pad)}
+  .body p{font-size:15.5px;line-height:24px;margin-top:16px;letter-spacing:-.1px}
+  .body p:first-child{margin-top:20px}
+  .body b{font-weight:600}
+
+  h2.sh{font-family:var(--serif);font-weight:400;font-size:22px;line-height:26px;margin:30px 0 0;
+    letter-spacing:-.3px;padding:0 var(--pad)}
+  h2.sh + .body p:first-child{margin-top:12px}
+
+  .num{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);font-weight:600;
+    padding:0 var(--pad);margin-top:34px;display:block}
+
+  figure{margin-top:22px}
+  figure .imgslot{height:210px}
+  figcaption{font-size:11.5px;line-height:16px;color:var(--faint);padding:9px var(--pad) 0}
+
+  /* facts panel */
+  .facts{margin:22px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:15px}
+  .facts .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:11px}
+  .facts dl{display:grid;grid-template-columns:74px 1fr;gap:7px 12px;font-size:12.5px;line-height:17px}
+  .facts dt{color:var(--faint)}
+  .facts dd{color:var(--ink)}
+
+  /* order list */
+  .order{padding:0 var(--pad);margin-top:14px}
+  .oitem{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--hair-soft)}
+  .oitem .b{width:5px;height:5px;border-radius:50%;background:var(--crimson);margin-top:8px;flex-shrink:0}
+  .oitem .t{font-size:14.5px;font-weight:600;letter-spacing:-.2px;line-height:19px}
+  .oitem .d{font-size:13px;line-height:18px;color:var(--mute);margin-top:3px}
+
+  /* temperature strip */
+  .wscale{display:flex;gap:3px;margin:18px var(--pad) 0}
+  .wstep{flex:1}
+  .wstep .sw{height:5px;border-radius:1px}
+  .wstep .t{font-size:12px;font-weight:600;margin-top:8px}
+  .wstep .c{font-size:10px;color:var(--faint);margin-top:2px}
+
+  .rule-note{margin:20px var(--pad) 0;border-left:2px solid var(--crimson);padding:2px 0 2px 14px}
+  .rule-note p{font-size:13.5px;line-height:19px;color:var(--mute);margin:0}
+  .rule-note p + p{margin-top:8px}
+
+  .nextrow{display:flex;gap:12px;padding:13px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .nextrow .n{font-size:14.5px;font-weight:600;letter-spacing:-.2px}
+  .nextrow .m{font-size:13px;line-height:18px;color:var(--mute);margin-top:3px}
+  .nthumb{width:74px;height:58px;border-radius:3px;flex-shrink:0}
+
+  .footer{padding:36px 0 20px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;
+    padding:10px 0 18px;flex-shrink:0}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);
+    display:flex;align-items:center;justify-content:center}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:900px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#e9e6e1;margin:26px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:820px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+  .notes code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b9b4ad;
+    background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Hero article — draft</h1>
+  <p>Copy is a first draft for voice. Eight image slots, each named and captioned with what it needs to show.
+     Same rule as the prefecture page: drop correctly-named files into <b>images/</b> and they appear.</p>
+</div>
+
+<div class="stage">
+  <div class="col">
+    <div class="col-cap">Article page</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+        <div class="lede">
+          <div class="kick">Tochigi · Nikko</div>
+          <h1>Hot water, warm sake</h1>
+          <div class="sub">A hot spring village two hours past Nikko, where you can taste the local sake in the shop before
+             you buy it, then warm the bottle in your own bath.</div>
+          <div class="by">Yunishigawa Onsen · 11 min read</div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <!-- 1 · COVER -->
+        <div class="cover imgslot dark">
+          <img src="images/art-yunishigawa-cover.jpg" alt="" onerror="__imgfall(this)">
+          <span class="fn">art-yunishigawa-cover.jpg</span>
+        </div>
+        <figcaption>Cover. The village street at dusk, or the vine bridge lit. Landscape, 390 × 230.</figcaption>
+
+        <div class="body">
+          <p>Yunishigawa is two hours north of Nikko, up a valley, and it's hard to reach on purpose. The Heike lost the
+             war at Dan-no-Ura in 1185 and the survivors walked north until they found somewhere nobody would think
+             to look. Some of them stopped here and never left.</p>
+          <p>About a thousand people live here now. There are more open-air baths in the valley than there are houses,
+             one street running through the middle of it, and a single liquor shop that shuts at seven.</p>
+        </div>
+
+        <span class="num">i · Getting there</span>
+        <div class="body">
+          <p>Tobu Liberty from Asakusa to Yunishigawa-Onsen station, about two hours and forty minutes. Then the
+             Nikko Kotsu bus another twenty-five minutes up the valley. Get off at Heike-no-Sho-mae.</p>
+          <p>There are only a handful of buses a day, so check the times before you book the train rather than after.</p>
+        </div>
+
+        <span class="num">ii · The village</span>
+        <div class="body">
+          <p>Nobody quite agrees how old the spring is. The inn that owns it says eight hundred years, the tourist
+             board usually says 1573, and either way people have been getting into this water for a very long time.</p>
+          <p>What everyone does agree on is why the village is where it is. It was chosen because nobody would find it,
+             and some of the old local rules come straight out of that — no carp banners in May, no roosters kept.
+             Nothing that flies a flag or makes a noise at dawn.</p>
+        </div>
+
+        <!-- 2 -->
+        <figure>
+          <div class="imgslot">
+            <img src="images/art-yunishigawa-valley.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">art-yunishigawa-valley.jpg</span>
+          </div>
+          <figcaption>The valley and the river. Show how small it is — houses against the slope. Landscape.</figcaption>
+        </figure>
+
+        <span class="num">iii · Where to stay</span>
+        <h2 class="sh">Honke Bankyū</h2>
+        <div class="body">
+          <p>Bankyū was founded in 1666 and has been run by the same family ever since, direct descendants of the Heike
+             who settled the valley. They own Fujikura-no-yu, the spring the whole village grew out of. Somebody
+             bangs a drum when you arrive, which is either charming or alarming depending on how long the journey
+             was.</p>
+          <p>Dinner is in a separate building on the other side of the river, and you cross a vine bridge to get to it.
+             It's cooked in front of you over charcoal on a sunken hearth — fish, mountain vegetables, whatever's
+             around. The bridge itself was built by craftsmen from Iya in Shikoku, which is the other place the
+             Heike hid after the war.</p>
+          <p>Every room faces the river. The suite they renovated in 2025 is 80m² with its own half-open bath, and
+             there's a larger room with a full private bath that they only let out twice a day. Book one of those if
+             you can — you'll want a private tub for the next part.</p>
+        </div>
+
+        <!-- 3 -->
+        <figure>
+          <div class="imgslot">
+            <img src="images/art-bankyu-irori.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">art-bankyu-irori.jpg</span>
+          </div>
+          <figcaption>Dinner at the irori — skewers around the fire. Warm, close, not styled. Landscape.</figcaption>
+        </figure>
+
+        <div class="facts">
+          <div class="h">Honke Bankyū</div>
+          <dl>
+            <dt>Founded</dt><dd>1666</dd>
+            <dt>Address</dt><dd>749 Yunishigawa, Nikko, Tochigi</dd>
+            <dt>Check in</dt><dd>15:00 · out 10:00</dd>
+            <dt>Bus stop</dt><dd>Honke Bankyū Ryokan-mae</dd>
+            <dt>Ask about</dt><dd>Cottages, and which sake they pour at dinner</dd>
+          </dl>
+        </div>
+
+        <span class="num">iv · Where to drink</span>
+        <h2 class="sh">Yuzawaya Saketen</h2>
+        <div class="body">
+          <p>Yuzawaya is a liquor shop on the main street, opposite the free car park. What makes it worth finding is
+             the counter along one side, about ten seats, where you can taste what's on the shelves before you decide
+             what to take home.</p>
+          <p>It's a shop rather than a bar, and nobody's making cocktails. You point at a bottle, they open it, and you
+             sit down and drink it. If you like it, you buy one on the way out.</p>
+          <p>The shelves are the reason to come. Most of it is Tochigi, a lot of it is Nikko, and a few bottles are made
+             for this village and sold nowhere else. In a place this small that isn't a marketing idea — it's just
+             what the local brewery sends up the mountain.</p>
+        </div>
+
+        <!-- 4 -->
+        <figure>
+          <div class="imgslot">
+            <img src="images/art-yuzawaya-counter.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">art-yuzawaya-counter.jpg</span>
+          </div>
+          <figcaption>The counter, with the shelves behind it. Needs to read as shop first, bar second. Landscape.</figcaption>
+        </figure>
+
+        <div class="body">
+          <p>The thing to try is their amazake. Amazake is rice fermented with koji — thick, sweet, no alcohol, sold hot
+             in winter all over Japan. Theirs is made with soy milk instead of water, and the soy milk comes from
+             Heike Yuba, who make yuba a few doors up the same street.</p>
+          <p><b>Yuba</b> is the skin that forms on soy milk when you heat it. Someone lifts it off by hand, and does
+             it again, and again. Nikko has made it for centuries because the mountain temples ate no meat and needed
+             the protein, and Nikko yuba is rolled thicker than the Kyoto version — closer to a food than a garnish.</p>
+          <p>So you're drinking something made out of what the neighbours make, with water from the mountain you've just
+             been sitting in. That's why it's worth buying here rather than ordering something similar at home.</p>
+        </div>
+
+        <div class="body"><p><b>What else to order</b></p></div>
+        <div class="order">
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">The Yunishigawa-only bottles</div>
+            <div class="d">Ask what's only sold here that month — there's usually something, and you can't order it anywhere else.</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Doburoku</div>
+            <div class="d">Thick, cloudy and low in alcohol, drunk cold. It tastes nothing like what most people
+               expect from sake, which is exactly why to order it.</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Nikko craft beer</div>
+            <div class="d">Good for when you've been on two trains and a bus and don't want to start with sake.</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Ham cutlet, gyoza sausage</div>
+            <div class="d">The snacks. Fried, cheap and completely unpretentious, and they do the job.</div>
+          </div></div>
+        </div>
+
+        <div class="facts">
+          <div class="h">Yuzawaya Saketen</div>
+          <dl>
+            <dt>Address</dt><dd>766 Yunishigawa, Nikko, Tochigi 321-2601</dd>
+            <dt>Phone</dt><dd>0288-98-0423</dd>
+            <dt>Hours</dt><dd>About 9:00–19:00, later at weekends. Varies by season — call.</dd>
+            <dt>Seats</dt><dd>Around 10</dd>
+            <dt>Parking</dt><dd>Free, opposite</dd>
+          </dl>
+        </div>
+
+        <span class="num">v · Warming sake in the bath</span>
+        <div class="body">
+          <p>The easiest way to warm sake in a hot spring town is to put the bottle in the water. Sealed, standing
+             upright in the tub, while you sit in there with it. No pan, no stove, and definitely no microwave.</p>
+          <p>This only works in a private bath — a room with its own tub, or one you've booked for an hour. Never a
+             shared bath. Glass in a communal tub is a genuine hazard, and a drink doesn't belong in there anyway.</p>
+          <p>Most of these baths run somewhere between 42 and 45 degrees, which lands the sake around 40. That's
+             nurukan, and it's where a lot of junmai is at its best.</p>
+        </div>
+
+        <!-- 5 -->
+        <figure>
+          <div class="imgslot">
+            <img src="images/art-bottle-in-bath.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">art-bottle-in-bath.jpg</span>
+          </div>
+          <figcaption>The method shot. Bottle standing in the tub, steam, stone edge. This is the image people
+             will screenshot. Landscape.</figcaption>
+        </figure>
+
+        <div class="body">
+          <p><b>You do not need a thermometer.</b> Cold sake gives off almost nothing. As it warms, the smell of the rice starts coming up out of the bottle —
+             soft, a bit like steamed rice, sometimes closer to cream or nuts. When you can smell it without leaning
+             in, it's ready. If it turns sharp or spirity you've gone too far.</p>
+          <p>Kimoto and yamahai take heat best, and Sōhomare is the one to practise on — Yuzawaya has it on the shelf.
+             Big fruity daiginjo mostly doesn't improve, so don't waste one finding out.</p>
+        </div>
+
+        <div class="wscale">
+          <div class="wstep"><div class="sw" style="background:#B8C4CC"></div><div class="t">30°</div><div class="c">Hinatakan</div></div>
+          <div class="wstep"><div class="sw" style="background:#D8B98A"></div><div class="t">40°</div><div class="c">Nurukan</div></div>
+          <div class="wstep"><div class="sw" style="background:#C4762F"></div><div class="t">45°</div><div class="c">Jōkan</div></div>
+          <div class="wstep"><div class="sw" style="background:#9B1B1B"></div><div class="t">50°</div><div class="c">Atsukan</div></div>
+        </div>
+
+        <div class="body"><p><b>Bath etiquette, briefly</b></p></div>
+        <div class="rule-note">
+          <p>Wash and rinse yourself completely before getting in. The tub is for soaking, not for cleaning.</p>
+          <p>The small towel stays out of the water — most people fold it and rest it on their head. Tie long hair up.</p>
+          <p>Don't get in drunk, and drink water between soaks. Hot water and alcohol dehydrate you fast and the
+             dizziness comes on quicker than you'd think. One drink in the bath, not four.</p>
+        </div>
+
+        <span class="num">vi · Three more baths</span>
+        <div class="body">
+          <p>If you've come this far you may as well keep going. These three are each worth a night, and they're
+             nothing like each other.</p>
+        </div>
+
+        <div class="nextrow">
+          <div class="nthumb imgslot"><img src="images/art-next-shiobara.jpg" alt="" onerror="__imgfall(this)"><span class="fn">art-next-shiobara.jpg</span></div>
+          <div><div class="n">Shiobara</div><div class="m">Placeholder — confirm on the trip. Picked for the sheer number of baths in one valley.</div></div>
+        </div>
+        <div class="nextrow">
+          <div class="nthumb imgslot"><img src="images/art-next-nasu.jpg" alt="" onerror="__imgfall(this)"><span class="fn">art-next-nasu.jpg</span></div>
+          <div><div class="n">Nasu</div><div class="m">Placeholder — confirm. Picked for what is around it: Kuroiso, the farms, the food.</div></div>
+        </div>
+        <div class="nextrow">
+          <div class="nthumb imgslot"><img src="images/art-next-tbc.jpg" alt="" onerror="__imgfall(this)"><span class="fn">art-next-tbc.jpg</span></div>
+          <div><div class="n">To be chosen on the trip</div><div class="m">The hard-to-reach one. Kawamata or Okukinu. Not writing it until we have been.</div></div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notes">
+  <h3>Images — where they go and why</h3>
+  <ul>
+    <li><code>art-yunishigawa-cover.jpg</code> — top of the article, 390 × 230. Street at dusk or the bridge lit.</li>
+    <li><code>art-yunishigawa-valley.jpg</code> — after the village section. Job: show scale. Houses against the slope.</li>
+    <li><code>art-bankyu-irori.jpg</code> — after the inn section. The fire and the food, not the building exterior.</li>
+    <li><code>art-yuzawaya-counter.jpg</code> — after the shop intro, before the order list. Must read as shop first.</li>
+    <li><code>art-bottle-in-bath.jpg</code> — the method shot, immediately after the instruction. This is the one people screenshot, so it should be the best photo in the piece.</li>
+    <li><code>art-next-shiobara.jpg</code>, <code>art-next-nasu.jpg</code>, <code>art-next-tbc.jpg</code> — thumbnails, 74 × 58.</li>
+  </ul>
+  <p style="font-size:13.5px;line-height:1.65;margin-top:14px;max-width:820px">Eight slots. One per section, plus
+     the cover. Any more and the piece turns into a gallery.</p>
+
+  <h3>Still to report</h3>
+  <ul>
+    <li><b>Bankyū's address</b> is in the facts panel as a placeholder — verify the street number.</li>
+    <li><b>Cottages</b> — one booking site lists them, their own site is closed to search engines. Phone call.</li>
+    <li><b>Which sake Bankyū pours</b> at the irori. This is the question that ties the inn to the shop.</li>
+    <li><b>Yuzawaya's hours</b> — four sources, four answers.</li>
+    <li><b>The taboos</b> — no carp banners, no roosters. Widely repeated, not yet checked against a primary source. If it does not hold up, cut it rather than hedging it.</li>
+    <li><b>The three baths</b> are deliberately unwritten.</li>
+  </ul>
+</div>
+
+
+<script>
+window.__imgfall=function(el){
+  var exts=['.jpg','.jpeg','.png','.webp','.JPG','.JPEG','.PNG','.WEBP'];
+  var src=el.getAttribute('src');
+  var base=src.replace(/\.[A-Za-z]+$/,'');
+  var i=parseInt(el.dataset.try||'0',10);
+  while(i<exts.length && base+exts[i]===src){i++;}
+  if(i<exts.length){el.dataset.try=i+1;el.src=base+exts[i];return;}
+  el.remove();
+};
+</script>
+</body>
+</html>

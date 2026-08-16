@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Tochigi prefecture page (v2)</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d131a; --ink:#101820; --cream:#F5F0EB; --cream-deep:#EDE6DD;
+    --cream-warm:#E8DFD2; --crimson:#9B1B1B; --crimson-bright:#F03D4D;
+    --mute:#5F5E5A; --faint:#8A8880;
+    --hair:rgba(16,24,32,0.10); --hair-soft:rgba(16,24,32,0.06);
+    --sans:'Supreme',system-ui,sans-serif; --serif:'Sentient',Georgia,serif;
+    --pad:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+
+  .page-head{max-width:1000px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:720px}
+
+  .stage{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .col-sub{color:#8f8b85;font-size:12.5px;line-height:1.6;margin-bottom:14px;min-height:56px}
+
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.03)}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright);text-shadow:0 0 12px rgba(240,61,77,.45)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  .hero{padding:0 var(--pad) 26px}
+  .ovr{font-size:12px;color:rgba(255,255,255,.55);font-weight:500}
+  .hero h2{font-family:var(--serif);font-weight:400;font-size:28px;line-height:33px;color:var(--cream);
+    margin-top:4px;max-width:320px;letter-spacing:-.34px}
+
+  .pmast{padding:0 var(--pad) 22px}
+  .pmast .kanji{font-size:13px;color:rgba(245,240,235,.5);margin-top:6px;letter-spacing:.5px}
+  .pmast h2{font-family:var(--serif);font-weight:400;font-size:34px;line-height:38px;color:var(--cream);
+    margin-top:2px;letter-spacing:-.4px}
+  .stats{display:flex;margin-top:20px;border-top:1px solid rgba(245,240,235,.13);padding-top:14px}
+  .stat{flex:1}
+  .stat b{display:block;font-size:19px;color:var(--cream);font-weight:600;letter-spacing:-.3px}
+  .stat span{display:block;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:rgba(245,240,235,.45);
+    font-weight:600;margin-top:3px}
+
+  /* dropdown */
+  .dd{margin:14px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);overflow:hidden}
+  .ddhead{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;cursor:pointer}
+  .ddhead .l{font-size:14.5px;font-weight:600;letter-spacing:-.2px}
+  .ddhead .s{font-size:12px;color:var(--mute);margin-top:2px}
+  .chev{width:16px;height:16px;stroke:var(--mute);fill:none;stroke-width:2;transition:transform .18s}
+  .dd.open .chev{transform:rotate(180deg)}
+  .ddbody{display:none;border-top:1px solid var(--hair);max-height:620px;overflow-y:auto;background:var(--cream)}
+  .dd.open .ddbody{display:block}
+  .ddbody::-webkit-scrollbar{width:0}
+  .ddgroup{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--faint);font-weight:600;
+    padding:13px 15px 6px;background:var(--cream-deep);position:sticky;top:0}
+  .ddrow{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--hair-soft);cursor:pointer}
+  .ddrow:hover{background:var(--cream-deep)}
+  .ddrow .nm{font-size:14.5px;letter-spacing:-.2px;font-weight:500;flex-shrink:0}
+  .ddrow .jp{font-size:12px;color:var(--faint)}
+  .ddrow .ct{margin-left:auto;font-size:11.5px;color:var(--mute);white-space:nowrap}
+  .ddrow.hot .nm{color:var(--crimson);font-weight:600}
+  .ddrow.hot .ct{color:var(--crimson)}
+
+  /* sections */
+  .sec{background:var(--cream);padding-top:30px}
+  .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 var(--pad)}
+  .ovrow{display:flex;align-items:center;gap:12px;width:100%}
+  .secovr{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mute);font-weight:600;white-space:nowrap}
+  .rule{flex:1;height:1px;background:var(--hair)}
+  .sectitle{font-size:23px;line-height:26px;letter-spacing:-.5px;color:var(--ink);font-weight:600;margin-top:6px;padding:0 var(--pad)}
+  .secsub{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:6px;padding:0 var(--pad)}
+  .seclink{font-size:13px;color:var(--crimson);font-weight:500;white-space:nowrap;padding:0 var(--pad);display:block;margin-top:12px}
+
+  /* hero article */
+  .heroart{margin:16px var(--pad) 0;border-radius:4px;overflow:hidden}
+  .heroimg{height:186px;border-radius:2px;background:linear-gradient(140deg,#2b3238,#171c21);
+    display:flex;align-items:flex-end;padding:16px}
+  .heroimg .kick{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:rgba(245,240,235,.55);font-weight:600}
+  .heroart h3{font-family:var(--serif);font-weight:400;font-size:24px;line-height:28px;margin-top:13px;letter-spacing:-.3px}
+  .heroart p{font-size:13.5px;line-height:19px;color:var(--mute);margin-top:8px}
+  .byline{font-size:11.5px;color:var(--faint);margin-top:10px}
+
+  /* hero chapter list */
+  .chapters{margin-top:15px;border-top:1px solid var(--hair);padding-top:12px;display:grid;gap:10px}
+  .chap{display:flex;gap:11px;align-items:baseline}
+  .chap .no{font-family:var(--serif);font-size:12.5px;color:var(--crimson);width:13px;flex-shrink:0}
+  .chap .tx{font-size:12.5px;line-height:16px;color:var(--mute)}
+  .chap .tx b{color:var(--ink);font-weight:600}
+
+  /* warming scale */
+  .warm{margin:15px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:14px}
+  .warm .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .wscale{display:flex;gap:3px;margin-top:12px}
+  .wstep{flex:1}
+  .wstep .sw{height:5px;border-radius:1px}
+  .wstep .t{font-size:11px;font-weight:600;letter-spacing:-.2px;margin-top:8px}
+  .wstep .c{font-size:9.5px;color:var(--faint);margin-top:2px}
+  .wnote{font-size:11.5px;line-height:16px;color:var(--mute);margin-top:13px}
+
+  /* list rows */
+  .row{display:flex;align-items:flex-start;gap:13px;padding:14px var(--pad);border-bottom:1px solid var(--hair-soft)}
+  .rthumb{width:62px;height:62px;border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    background:var(--cream-warm)}
+  .rthumb svg{width:20px;height:20px;stroke:rgba(16,24,32,.3);fill:none;stroke-width:1.5}
+  .rbody{flex:1;min-width:0}
+  .rkind{font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--mute)}
+  .rname{font-size:14.5px;font-weight:600;letter-spacing:-.2px;line-height:18px;margin-top:3px}
+  .rmeta{font-size:12px;color:var(--mute);line-height:16px;margin-top:4px}
+  .rprice{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.3px;color:var(--crimson);
+    border:1px solid rgba(155,27,27,.25);border-radius:2px;padding:1px 5px;margin-top:7px}
+
+  /* events */
+  .erow{display:flex;gap:14px;padding:14px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .edate{width:58px;flex-shrink:0;text-align:center;border:1px solid var(--hair);border-radius:2px;
+    padding:7px 4px;overflow:hidden}
+  .edate b{display:block;font-size:16px;line-height:19px;font-weight:600;letter-spacing:-.4px;color:var(--ink)}
+  .edate span{display:block;font-size:9px;line-height:12px;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--faint);font-weight:600;margin-top:2px;word-break:break-word}
+  .ebody{flex:1;min-width:0}
+
+  /* shop cards */
+  .shoprail{display:flex;gap:12px;padding:16px var(--pad) 8px;overflow-x:auto;scrollbar-width:none}
+  .shoprail::-webkit-scrollbar{display:none}
+  .shopcard{width:168px;flex-shrink:0}
+  .shopimg{height:112px;border-radius:2px;background:linear-gradient(160deg,#e2dad0,#cbc0b1);
+    display:flex;align-items:center;justify-content:center}
+  .shopimg svg{width:22px;height:22px;stroke:rgba(16,24,32,.3);fill:none;stroke-width:1.5}
+  .shopcard .tag{font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);font-weight:600;margin-top:9px}
+  .shopcard .n{font-size:13.5px;line-height:17px;font-weight:600;letter-spacing:-.15px;margin-top:4px}
+  .shopcard .m{font-size:11.5px;line-height:15px;color:var(--mute);margin-top:4px}
+
+  /* food */
+  .foodgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px var(--pad) 4px}
+  .fcard{border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:12px}
+  .fcard .k{font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .fcard .n{font-size:13.5px;font-weight:600;letter-spacing:-.2px;line-height:17px;margin-top:5px}
+  .fcard .m{font-size:11.5px;line-height:15px;color:var(--mute);margin-top:5px}
+  .fcard.season{background:transparent;border-color:rgba(155,27,27,.3);padding:12px}
+  .fcard.season .k{color:var(--crimson)}
+
+  /* visit */
+  .vrow{display:flex;gap:13px;padding:14px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .vthumb{width:78px;height:62px;flex-shrink:0;border-radius:3px}
+
+  /* brewery grid */
+  .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px var(--pad) 4px}
+  .bcard{border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:11px 12px;position:relative}
+  .bcard .n{font-size:13.5px;font-weight:600;letter-spacing:-.2px;line-height:17px}
+  .bcard .m{font-size:11.5px;color:var(--mute);margin-top:4px}
+  .bcard.empty{background:transparent;border-style:dashed}
+  .bcard.empty .n{color:var(--mute);font-weight:500}
+  .visit{display:inline-block;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;
+    color:var(--crimson);border:1px solid rgba(155,27,27,.3);border-radius:2px;padding:1px 4px;margin-top:6px}
+
+  /* bottle rail */
+  .rail{display:flex;gap:12px;padding:16px var(--pad) 8px;overflow-x:auto;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  /* ---- IMAGE SLOTS — filename is printed in the placeholder ---- */
+  .imgslot{position:relative;overflow:hidden;background:linear-gradient(150deg,#1d2429,#12171b);
+    display:flex;align-items:center;justify-content:center}
+  .imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot .fn{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;letter-spacing:.2px;
+    color:rgba(245,240,235,.42);text-align:center;padding:0 6px;line-height:12px;word-break:break-all}
+  .imgslot.light{background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .imgslot.light .fn{color:rgba(16,24,32,.4)}
+
+  /* ---- app-style bottle card ---- */
+  .brail{display:flex;gap:12px;padding:18px var(--pad) 8px;overflow-x:auto;scrollbar-width:none}
+  .brail::-webkit-scrollbar{display:none}
+  .bcardx{width:226px;flex-shrink:0;border-radius:14px;overflow:hidden;background:var(--cream-deep);
+    border:1px solid var(--hair-soft)}
+  .bcardx .shot{height:196px;position:relative;background:linear-gradient(165deg,#1b2126,#0f1418)}
+  .bcardx .shot .imgslot{position:absolute;inset:0;background:transparent}
+  .match{position:absolute;top:12px;right:12px;width:52px;height:52px;border-radius:50%;
+    border:1.5px solid #3E6B52;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(12,18,22,.55)}
+  .match b{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.4px;line-height:15px}
+  .match b i{font-style:normal;font-size:8.5px}
+  .match span{font-size:6.5px;letter-spacing:1.1px;color:rgba(255,255,255,.72);font-weight:600;margin-top:2px}
+  .bcardx .meat{padding:14px 15px 16px}
+  .bcardx .nm{font-size:17px;line-height:21px;font-weight:600;letter-spacing:-.4px}
+  .bcardx .kura{font-size:9.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--mute);
+    font-weight:500;margin-top:9px;line-height:14px}
+  .bcardx hr{border:0;border-top:1px solid var(--hair);margin:12px 0}
+  .bcardx .plab{font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .prof{display:flex;align-items:center;gap:9px;margin-top:8px}
+  .prof .dot{width:22px;height:22px;border-radius:50%;border:1px solid #3E6B52;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center}
+  .prof .dot svg{width:12px;height:12px;stroke:#3E6B52;fill:none;stroke-width:1.6}
+  .prof .w{font-size:18px;font-weight:500;letter-spacing:-.3px}
+
+  .bot{width:132px;flex-shrink:0}
+  .botimg{height:158px;border-radius:2px;background:linear-gradient(160deg,#e2dad0,#cfc5b8);
+    display:flex;align-items:center;justify-content:center}
+  .botimg svg{width:22px;height:22px;stroke:rgba(16,24,32,.28);fill:none;stroke-width:1.5}
+  .bot .n{font-size:12.5px;line-height:16px;font-weight:600;letter-spacing:-.15px;margin-top:9px}
+  .bot .m{font-size:11px;color:var(--mute);margin-top:3px}
+
+  .trip{margin:18px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);
+    padding:15px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .trip .t{font-size:14.5px;font-weight:600;letter-spacing:-.2px}
+  .trip .s{font-size:12px;color:var(--mute);margin-top:3px}
+  .trip .go{font-size:13px;color:var(--crimson);font-weight:500;white-space:nowrap}
+
+  .footer{padding:34px 0 18px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;
+    padding:10px 0 18px;flex-shrink:0;box-shadow:0 -8px 20px rgba(16,24,32,.04)}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;line-height:12px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 6px 8px rgba(155,27,27,.25)}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:1000px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#e9e6e1;margin:26px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:860px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+  .flag{border-left:2px solid var(--crimson-bright);padding:10px 0 10px 16px;margin:16px 0;max-width:860px;
+    font-size:13.5px;line-height:1.65;color:#d6d1ca}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Tochigi prefecture page — revised sections</h1>
+  <p>Two changes from v1: Places is split into <b>Eat &amp; drink</b> and <b>Shop</b>, and a <b>Food</b> section is added.
+     Brewery visits are pulled out of the catalog into <b>Visit</b>, and a season strip sits under the stat row.
+     Every name below is real and sourced — see notes at the bottom.</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============ 1 · DROPDOWN ============ -->
+  <div class="col">
+    <div class="col-cap">1 · Prefecture dropdown</div>
+    <div class="col-sub">Unchanged from v1. Grouped by region with live catalog counts, so it is obvious where there is something to see.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="hero">
+          <div class="ovr">Japan</div>
+          <h2>Japan, the sake, and where we drink it.</h2>
+        </div>
+      </div>
+      <div class="scroll">
+        <div class="dd open" data-dd>
+          <div class="ddhead" data-ddtoggle>
+            <div>
+              <div class="l">Browse by prefecture</div>
+              <div class="s">All 47, grouped by region</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="ddbody" data-ddbody></div>
+        </div>
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2 · TOCHIGI ============ -->
+  <div class="col">
+    <div class="col-cap">2 · Tochigi — revised</div>
+    <div class="col-sub">Scroll it. Season strip, hero, events, eat &amp; drink, shop, food, artisans, visit, then the two catalogs and the trip builder.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+        <div class="pmast">
+          <div class="ovr">Kantō</div>
+          <h2>Tochigi</h2>
+          <div class="kanji">栃木県 · とちぎ</div>
+          <div class="stats">
+            <div class="stat"><b>28</b><span>Breweries</span></div>
+            <div class="stat"><b>24</b><span>Sake</span></div>
+            <div class="stat"><b>31</b><span>Places</span></div>
+            <div class="stat"><b>6</b><span>Events</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <!-- HERO -->
+        <div class="sec" style="padding-top:24px">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Article</div><div class="rule"></div></div></div>
+          <div class="heroart">
+            <div class="heroimg imgslot" style="align-items:center;justify-content:center">
+              <img src="images/hero-yunishigawa-kazurabashi.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">hero-yunishigawa-kazurabashi.jpg</span>
+            </div>
+            <h3>Hot water, warm sake</h3>
+            <p>A hot spring village two hours past Nikko, where you can taste sake in the shop before you buy it
+               and warm the bottle in your own bath. One street, one liquor shop, and more open-air baths than
+               houses.</p>
+            <div class="byline">Yunishigawa Onsen, Nikko · 14 min read</div>
+
+            <div class="chapters">
+              <div class="chap"><div class="no">i</div><div class="tx"><b>Getting there.</b> Two trains and a bus, and why it takes that long.</div></div>
+              <div class="chap"><div class="no">ii</div><div class="tx"><b>The village.</b> A thousand people, more baths than houses, and one street to walk down.</div></div>
+              <div class="chap"><div class="no">iii</div><div class="tx"><b>Honke Bankyū.</b> Founded 1666. You cross a vine bridge to get to dinner. Every room faces the river.</div></div>
+              <div class="chap"><div class="no">iv</div><div class="tx"><b>Yuzawaya Saketen.</b> Ten seats in a liquor shop. Taste before you buy, and what to get.</div></div>
+              <div class="chap"><div class="no">v</div><div class="tx"><b>Warming sake in the bath.</b> Plus how not to annoy anyone else in the bath.</div></div>
+              <div class="chap"><div class="no">vi</div><div class="tx"><b>Three more baths.</b> Where to go next.</div></div>
+            </div>
+          </div>
+
+          <!-- warming block — the teaching device, carried out of the article -->
+          <div class="warm">
+            <div class="h">Warm it in the bath</div>
+            <div class="wnote" style="margin-top:10px">Stand the sealed bottle in the tub while you soak. Private
+               bath only — never a shared one. The water runs 42–45°, so the sake lands near 40°.</div>
+            <div class="wnote"><b style="color:var(--ink)">You don't need a thermometer.</b> Cold sake smells of
+               almost nothing. As it warms, the rice comes up out of the bottle. When you can smell it without
+               leaning in, it's ready. Sharp or spirity means it went too far.</div>
+            <div class="wscale">
+              <div class="wstep">
+                <div class="sw" style="background:#B8C4CC"></div>
+                <div class="t">30°</div>
+                <div class="c">Hinatakan</div>
+              </div>
+              <div class="wstep">
+                <div class="sw" style="background:#D8B98A"></div>
+                <div class="t">40°</div>
+                <div class="c">Nurukan</div>
+              </div>
+              <div class="wstep">
+                <div class="sw" style="background:#C4762F"></div>
+                <div class="t">45°</div>
+                <div class="c">Jōkan</div>
+              </div>
+              <div class="wstep">
+                <div class="sw" style="background:#9B1B1B"></div>
+                <div class="t">50°</div>
+                <div class="c">Atsukan</div>
+              </div>
+            </div>
+            <div class="wnote">Kimoto and yamahai take heat best. Sōhomare is the one to practise on, and Yuzawaya
+               has it.</div>
+          </div>
+        </div>
+
+        <!-- EVENTS -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Events</div><div class="rule"></div></div></div>
+          <div class="sectitle">What's on</div>
+          <div class="erow">
+            <div class="edate"><b>Feb</b><span>1 week</span></div>
+            <div class="ebody">
+              <div class="rname">Shimotsukare season</div>
+              <div class="rmeta">One week a year. Salmon head, sake lees, roasted beans, offered at Inari shrines. Gone by March.</div>
+            </div>
+          </div>
+          <div class="erow">
+            <div class="edate"><b>Mar</b><span>Tokyo</span></div>
+            <div class="ebody">
+              <div class="rname">Shimotsuke Tōji new sake release</div>
+              <div class="rmeta">Taste the new sake from 26 breweries without leaving Tokyo. Osaka in May. Sells out.</div>
+            </div>
+          </div>
+          <div class="erow">
+            <div class="edate"><b>Apr</b><span>&amp; Nov</span></div>
+            <div class="ebody">
+              <div class="rname">Mashiko Pottery Fair</div>
+              <div class="rmeta">Several hundred potters selling from tents. Buy a cup in the morning and drink from it that night.</div>
+            </div>
+          </div>
+          <div class="erow">
+            <div class="edate"><b>Sep</b><span>Annual</span></div>
+            <div class="ebody">
+              <div class="rname">Sasara Light Cube — Tochigi Sake Summit</div>
+              <div class="rmeta">Taste 24 of the prefecture's breweries in one afternoon, five minutes from Utsunomiya station.</div>
+            </div>
+          </div>
+          <div class="seclink">See all events →</div>
+        </div>
+
+        <!-- EAT & DRINK -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Restaurants &amp; bars</div><div class="rule"></div></div></div>
+          <div class="sectitle">Where we eat and drink</div>
+          <div class="secsub">What it costs is on every row.</div>
+
+          <div class="row">
+            <div class="rthumb imgslot light"><img src="images/place-ippachi.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-ippachi.jpg</span></div>
+            <div class="rbody">
+              <div class="rkind">Kappō · Utsunomiya</div>
+              <div class="rname">Ippachi (一八)</div>
+              <div class="rmeta">The second-highest-rated Japanese restaurant in Tochigi, and dinner is ¥2,000–3,000. Eight seats at the counter and everything cooked in front of you. Book ahead.</div>
+              <div class="rprice">¥2,000–3,000</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb"><svg viewBox="0 0 24 24"><path d="M5 3h14l-1 6a6 6 0 0 1-12 0z"/><path d="M12 15v6M8 21h8"/></svg></div>
+            <div class="rbody">
+              <div class="rkind">Tasting room</div>
+              <div class="rname">Shimadaya Saketen, Miya-Mirai</div>
+              <div class="rmeta">Taste before you buy. All 28 breweries in the prefecture, three glasses from ¥1,200, one minute from the station.</div>
+              <div class="rprice">From ¥1,200</div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="rthumb"><svg viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M5 12a7 7 0 0 1 14 0"/><path d="M7 18h10"/></svg></div>
+            <div class="rbody">
+              <div class="rkind">Yuba kappō</div>
+              <div class="rname">Zen (全), Nikko</div>
+              <div class="rmeta">A whole meal built on yuba, the skin off soy milk. Nikko has made it for centuries. Lunch is under ¥3,000.</div>
+              <div class="rprice">Lunch ¥2,000–3,000</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18"/><path d="M6 8h12M6 14h12"/></svg></div>
+            <div class="rbody">
+              <div class="rkind">Izakaya</div>
+              <div class="rname">Kumaō, Ujiie</div>
+              <div class="rmeta">Grilled skewers and river fish, and they sell Senkin, made ten minutes up the road.</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb"><svg viewBox="0 0 24 24"><path d="M5 3h14l-1 6a6 6 0 0 1-12 0z"/><path d="M12 15v6M8 21h8"/></svg></div>
+            <div class="rbody">
+              <div class="rkind">Bar</div>
+              <div class="rname">Mushu OGAWA — Pipe no Kemuri</div>
+              <div class="rmeta">A proper sit-down bar, open late, and the only one in Tochigi with a national listing.</div>
+              <div class="rprice">¥3,000–4,000</div>
+            </div>
+          </div>
+
+          <div class="seclink">See all 14 →</div>
+        </div>
+
+        <!-- WHERE WE BUY SAKE -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Sake shops</div><div class="rule"></div></div></div>
+          <div class="sectitle">Where we buy sake</div>
+          <div class="secsub">Bottle shops across the prefecture. Most of them will post to you.</div>
+          <div class="shoprail">
+            <div class="shopcard">
+              <div class="shopimg imgslot light"><img src="images/shop-shimadaya-miyamirai.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-shimadaya-miyamirai.jpg</span></div>
+              <div class="tag">Utsunomiya</div>
+              <div class="n">Shimadaya, Miya-Mirai</div>
+              <div class="m">Taste before you buy. All 28 breweries in the prefecture, three glasses from ¥1,200, a minute from the station.</div>
+            </div>
+            <div class="shopcard">
+              <div class="shopimg imgslot light"><img src="images/shop-yuzawaya-saketen.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-yuzawaya-saketen.jpg</span></div>
+              <div class="tag">Yunishigawa</div>
+              <div class="n">Yuzawaya Saketen</div>
+              <div class="m">A liquor shop with about ten seats, so you can try things before you commit. Some bottles are made for this village and sold nowhere else.</div>
+            </div>
+            <div class="shopcard">
+              <div class="shopimg imgslot light"><img src="images/shop-hoshidaya-saketen.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-hoshidaya-saketen.jpg</span></div>
+              <div class="tag">Ōtawara</div>
+              <div class="n">Hoshidaya Saketen</div>
+              <div class="m">Open since 1921, out in the countryside at Kurobane. More Kyokkō than anywhere else, plus Daina, Tentaka and Senkin.</div>
+            </div>
+            <div class="shopcard">
+              <div class="shopimg imgslot light"><img src="images/shop-mashidaya.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-mashidaya.jpg</span></div>
+              <div class="tag">Mibu</div>
+              <div class="n">Mashidaya</div>
+              <div class="m">They write a proper tasting note for everything they stock, and they stock from all over Japan. You can order online.</div>
+            </div>
+          </div>
+          <div class="seclink">See all 6 sake shops →</div>
+        </div>
+
+        <!-- WHERE WE SHOP -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Artisans</div><div class="rule"></div></div></div>
+          <div class="sectitle">Where we shop</div>
+          <div class="secsub">Potters, picklers and butchers, and the shops that sell their work. You can buy from all of them.</div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/artisan-matsuzaki-ken.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">artisan-matsuzaki-ken.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Ceramic artist · Mashiko</div>
+              <div class="rname">Matsuzaki Ken</div>
+              <div class="rmeta">Trained under a Living National Treasure, then dropped his own style and started again on 400-year-old Oribe. Makes sake cups and bowls. His work is in the Met and the V&amp;A, and you can buy it in Mashiko.</div>
+              <div class="rprice">Buy at Zengo, or at the kiln</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/shop-toko-mashiko.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">shop-toko-mashiko.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Ceramics shop · Mashiko</div>
+              <div class="rname">Tōkō</div>
+              <div class="rmeta">Forty potters under one roof, in a 130-year-old stone warehouse. There's a whole section of nothing but sake cups, and they post overseas.</div>
+              <div class="rprice">Guinomi ¥3,000–12,000</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/shop-zengo-yamani.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">shop-zengo-yamani.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Ceramics shop · Mashiko</div>
+              <div class="rname">Zengo, at Yamani Ōtsuka</div>
+              <div class="rmeta">The expensive end. Hamada Shōji, Shimaoka Tatsuzō, Matsuzaki Ken, Bernard Leach — work by Living National Treasures, and you can buy it.</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/artisan-uwasawa-umetaro.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">artisan-uwasawa-umetaro.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Pickle maker · Nikko</div>
+              <div class="rname">Uwasawa Umetarō Shōten</div>
+              <div class="rmeta">Fourteen generations. His great-grandfather invented tamari-zuke after the war by pickling vegetables in the liquid that collects on ageing miso. Never heated, brought up from the cellar each morning, nothing sold more than three days old.</div>
+              <div class="rprice">Rakkyō ¥600</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/artisan-ebiya-chozo.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">artisan-ebiya-chozo.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Yuba maker · Nikko</div>
+              <div class="rname">Ebiya Chōzō</div>
+              <div class="rmeta">Making yuba since 1872, by hand, for the shrines and the imperial villas. Japanese soybeans, Nikko water, nothing added.</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="rthumb imgslot light">
+              <img src="images/artisan-waki-seinikuten.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">artisan-waki-seinikuten.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rkind">Butcher · Ōtawara</div>
+              <div class="rname">Waki Seinikuten</div>
+              <div class="rmeta">Buys whole carcasses of Takumi, the top grade of Tochigi beef. The menchi-katsu is made from it and costs a few hundred yen. People queue.</div>
+            </div>
+          </div>
+
+          <div class="seclink">See all 14 →</div>
+        </div>
+
+        <!-- LOCAL FOODS -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Food</div><div class="rule"></div></div></div>
+          <div class="sectitle">Local Tochigi foods</div>
+          <div class="foodgrid">
+            <div class="fcard">
+              <div class="k">Nikko</div>
+              <div class="n">Yuba</div>
+              <div class="m">The skin off soy milk, rolled thicker than Kyoto's. Ebiya Chōzō has made it by hand since 1872.</div>
+            </div>
+            <div class="fcard season">
+              <div class="k">February only</div>
+              <div class="n">Shimotsukare</div>
+              <div class="m">Salmon head, sake lees, roasted beans. One week in February. Half the prefecture won't touch it.</div>
+            </div>
+            <div class="fcard">
+              <div class="k">Tochigi City</div>
+              <div class="n">Miso dengaku</div>
+              <div class="m">Grilled tofu with miso, at a shop making miso since 1781. They brew beer now too.</div>
+            </div>
+            <div class="fcard">
+              <div class="k">Ōtawara</div>
+              <div class="n">Tochigi wagyu "Takumi"</div>
+              <div class="m">The top grade of Tochigi beef, and the butcher who buys whole carcasses of it.</div>
+            </div>
+            <div class="fcard">
+              <div class="k">Sano</div>
+              <div class="n">Aodake ramen</div>
+              <div class="m">Noodles pressed by hand under a bamboo pole. Almost nobody still does it any more.</div>
+            </div>
+            <div class="fcard">
+              <div class="k">Nakagawa · summer</div>
+              <div class="n">Ayu</div>
+              <div class="m">River fish, salted and grilled whole over charcoal. Caught in the Nakagawa from June.</div>
+            </div>
+          </div>
+          <div class="seclink">See all →</div>
+        </div>
+        <!-- VISIT -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">Breweries</div><div class="rule"></div></div></div>
+          <div class="sectitle">Breweries you can visit</div>
+          <div class="secsub">Six breweries you can book or walk into.</div>
+          <div class="vrow">
+            <div class="vthumb imgslot">
+              <img src="images/brewery-shimazaki.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">brewery-shimazaki.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rname">Shimazaki — the tunnel</div>
+              <div class="rmeta">Walk 600m of tunnel dug in 1945, full of ageing sake at a steady 10°C. ¥200, tablet guide included. They'll hold a bottle for you for up to 20 years.</div>
+              <div class="rprice">¥200 · weekends</div>
+            </div>
+          </div>
+          <div class="vrow">
+            <div class="vthumb imgslot">
+              <img src="images/brewery-nishibori.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">brewery-nishibori.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rname">Nishibori — brewery and distillery</div>
+              <div class="rmeta">The only properly organised tour in the prefecture. Sake and shochu, one hour or ninety minutes, ¥1,500 or ¥3,000.</div>
+              <div class="rprice">¥1,500 / ¥3,000</div>
+            </div>
+          </div>
+          <div class="vrow">
+            <div class="vthumb imgslot">
+              <img src="images/brewery-tsuji-zenbei.jpg" alt="" onerror="__imgfall(this)">
+              <span class="fn">brewery-tsuji-zenbei.jpg</span>
+            </div>
+            <div class="rbody">
+              <div class="rname">Tsuji Zenbei — the oldest</div>
+              <div class="rmeta">The oldest brewery in Tochigi, founded 1673, and they grow their own rice. There's a gallery, and a garden for cold sake in summer.</div>
+            </div>
+          </div>
+          <div class="seclink">See all 6 →</div>
+        </div>
+
+        <!-- BREWERIES -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">All breweries</div><div class="rule"></div></div></div>
+          <div class="sectitle">Breweries</div>
+          <div class="bgrid">
+            <div class="bcard"><div class="n">Inoue Seikichi <span style="font-weight:400;color:var(--mute)">(Sawahime)</span></div><div class="m">11 sake listed</div></div>
+            <div class="bcard"><div class="n">Iinuma Meijō <span style="font-weight:400;color:var(--mute)">(Sugata)</span></div><div class="m">6 sake listed</div></div>
+            <div class="bcard"><div class="n">Kikunosato <span style="font-weight:400;color:var(--mute)">(Daina)</span></div><div class="m">3 sake listed</div></div>
+            <div class="bcard"><div class="n">Senkin</div><div class="m">1 sake listed</div></div>
+            <div class="bcard"><div class="n">Shimazaki <span style="font-weight:400;color:var(--mute)">(Azumarikishi)</span></div><div class="m">1 sake listed</div><span class="visit">Visit</span></div>
+            <div class="bcard"><div class="n">Sohomare</div><div class="m">1 sake listed</div></div>
+            <div class="bcard empty"><div class="n">Tonoike</div><div class="m">No sake listed yet</div></div>
+            <div class="bcard empty"><div class="n">Matsui</div><div class="m">No sake listed yet</div></div>
+          </div>
+          <div class="seclink">See all 28 breweries →</div>
+        </div>
+
+        <!-- SAKE -->
+        <div class="sec">
+          <div class="sechead"><div class="ovrow"><div class="secovr">All sake</div><div class="rule"></div></div></div>
+          <div class="sectitle">Sake from Tochigi</div>
+          <div class="brail">
+
+            <div class="bcardx">
+              <div class="shot">
+                <div class="imgslot">
+                  <img src="images/sake-sawahime-jd-shin-jizake-sengen.png" alt="" onerror="__imgfall(this)">
+                  <span class="fn">sake-sawahime-jd-shin-jizake-sengen.png</span>
+                </div>
+                <div class="match"><b>94<i>%</i></b><span>MATCH</span></div>
+              </div>
+              <div class="meat">
+                <div class="nm">Sawahime Junmai Daiginjo Shin Jizake Sengen</div>
+                <div class="kura">Inoue Seikichi · Utsunomiya</div>
+                <hr>
+                <div class="plab">Sake profile</div>
+                <div class="prof">
+                  <div class="dot"><svg viewBox="0 0 24 24"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4v4M13 4v4"/></svg></div>
+                  <div class="w">Fragrant</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bcardx">
+              <div class="shot">
+                <div class="imgslot">
+                  <img src="images/sake-senkin-jd-urara.png" alt="" onerror="__imgfall(this)">
+                  <span class="fn">sake-senkin-jd-urara.png</span>
+                </div>
+                <div class="match"><b>91<i>%</i></b><span>MATCH</span></div>
+              </div>
+              <div class="meat">
+                <div class="nm">Senkin Urara Junmai Daiginjo</div>
+                <div class="kura">Senkin · Sakura</div>
+                <hr>
+                <div class="plab">Sake profile</div>
+                <div class="prof">
+                  <div class="dot"><svg viewBox="0 0 24 24"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4v4M13 4v4"/></svg></div>
+                  <div class="w">Fragrant</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bcardx">
+              <div class="shot">
+                <div class="imgslot">
+                  <img src="images/sake-tentaka-tokubetsu-junmai-mizuhonosato.png" alt="" onerror="__imgfall(this)">
+                  <span class="fn">sake-tentaka-tokubetsu-junmai-mizuhonosato.png</span>
+                </div>
+                <div class="match"><b>88<i>%</i></b><span>MATCH</span></div>
+              </div>
+              <div class="meat">
+                <div class="nm">Tentaka Tokubetsu Junmai Mizuho no Sato</div>
+                <div class="kura">Tentaka · Ōtawara</div>
+                <hr>
+                <div class="plab">Sake profile</div>
+                <div class="prof">
+                  <div class="dot"><svg viewBox="0 0 24 24"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4v4M13 4v4"/></svg></div>
+                  <div class="w">Dry</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bcardx">
+              <div class="shot">
+                <div class="imgslot">
+                  <img src="images/sake-daina-junmai-chokarakuchi.png" alt="" onerror="__imgfall(this)">
+                  <span class="fn">sake-daina-junmai-chokarakuchi.png</span>
+                </div>
+                <div class="match"><b>85<i>%</i></b><span>MATCH</span></div>
+              </div>
+              <div class="meat">
+                <div class="nm">Daina Junmai Chokarakuchi</div>
+                <div class="kura">Kikunosato · Ōtawara</div>
+                <hr>
+                <div class="plab">Sake profile</div>
+                <div class="prof">
+                  <div class="dot"><svg viewBox="0 0 24 24"><path d="M4 13h16a8 8 0 0 1-16 0z"/><path d="M9 4v4M13 4v4"/></svg></div>
+                  <div class="w">Dry</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="seclink">See all 24 →</div>
+        </div>
+
+        <!-- TRIP -->
+        <div class="sec" style="padding-bottom:8px">
+          <div class="trip">
+            <div>
+              <div class="t">Build a Tochigi trip</div>
+              <div class="s">Pick kura and places, keep them in one itinerary</div>
+            </div>
+            <div class="go">Start →</div>
+          </div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <h3>Images</h3>
+  <div class="flag">Every image slot is a real <b>&lt;img&gt;</b> already pointing at <b>images/&lt;name&gt;</b>, with the
+     filename printed inside the placeholder. Drop correctly-named files into an <b>images/</b> folder beside this
+     HTML and they appear. No code edit needed. 18 files: see the placeholders, or the list in the sourcing doc.</div>
+
+  <h3>What changed from v1</h3>
+  <ul>
+    <li><b>Places is split.</b> Eat &amp; drink and Shop are different intents. Roughly half of what the research turned up is retail — bottle shops and ceramics galleries — and it had nowhere to live before.</li>
+    <li><b>Food is new.</b> The page had no food block at all, which undercut the whole reason food is in this app.</li>
+    <li><b>Visit is new.</b> Brewery experiences were invisible behind cards that report a sake count. Shimazaki's tunnel and Nishibori's tour are the two most bookable things in the prefecture.</li>
+    <li><b>Hero is an onsen stay.</b> Yunishigawa: the village, a night at Honke Bankyū, the bottle shop, how to warm what you bought, and three more baths to go on to. One article that carries a town, an inn, a shop and a skill.</li>
+    <li><b>The warming scale sits below the hero as its own block.</b> The teachable part lifted out so it works alone — someone who never opens the article still learns the four temperatures. Reusable on every prefecture page.</li>
+    <li><b>Bottle cards now match the app</b> — dark shot, match ring, brewery and prefecture in caps, rule, sake profile. Section eyebrow carries the profile pair rather than the word "Catalog".</li>
+    <li><b>Artisans is now defined properly:</b> people whose craft you eat, drink or drink from. Ceramic artist, pickle maker, yuba maker, butcher — and, to come, tofu maker, fishmonger, tea merchant, chef. The stone mason is gone; nobody drinks out of a wall.</li>
+    <li><b>Every artisan row leads to where you buy.</b> The story is the person and the object, not the equipment.</li>
+  </ul>
+
+  <h3>Numbers</h3>
+  <div class="flag">The stat row now reads <b>28 breweries</b>, not 35. The Tochigi Sake Brewers Association lists 28 members across 14 municipalities. The catalog's 35 presumably includes non-members, dormant kura, or shochu-only producers — worth reconciling before an official asks, because they will.</div>
+
+  <h3>Provenance</h3>
+  <ul>
+    <li><b>Confirmed from the business, the guild, or the prefectural press:</b> Shimazaki's tunnel and entry price; Nishibori's tour times and fees; Shimadaya's 28-brewery tasting room and the 32-bottle server; the Shimotsuke Tōji events; the Sasara summit; Tsuji Zenbei's 1673 founding; Taiseigama; Tōkō, Moegi, pejite; Ebiya Chōzō; Aburaden; the Fresspo market opening; shimotsukare.</li>
+    <li><b>From Tabelog's Hyakumeiten awards and category rankings:</b> Ippachi, Zen, Mushu OGAWA. Scores and price bands as of 1 Aug 2026.</li>
+    <li><b>Lead only, not yet visited:</b> Kumaō. Kept in because the Senkin-in-its-own-town angle is worth confirming, but it needs a visit before it publishes.</li>
+    <li>Brewery and sake catalog rows are unchanged from the production catalog.</li>
+  </ul>
+</div>
+
+<script>
+const PREFS = [{"id":"hokkaido","n":"Hokkaido","j":"北海道","r":"Hokkaido","b":15,"s":3},{"id":"aomori","n":"Aomori","j":"青森県","r":"Tohoku","b":21,"s":5},{"id":"iwate","n":"Iwate","j":"岩手県","r":"Tohoku","b":21,"s":16},{"id":"miyagi","n":"Miyagi","j":"宮城県","r":"Tohoku","b":31,"s":78},{"id":"akita","n":"Akita","j":"秋田県","r":"Tohoku","b":40,"s":50},{"id":"yamagata","n":"Yamagata","j":"山形県","r":"Tohoku","b":53,"s":75},{"id":"fukushima","n":"Fukushima","j":"福島県","r":"Tohoku","b":62,"s":42},{"id":"ibaraki","n":"Ibaraki","j":"茨城県","r":"Kanto","b":47,"s":17},{"id":"tochigi","n":"Tochigi","j":"栃木県","r":"Kanto","b":35,"s":24},{"id":"gunma","n":"Gunma","j":"群馬県","r":"Kanto","b":29,"s":29},{"id":"saitama","n":"Saitama","j":"埼玉県","r":"Kanto","b":34,"s":3},{"id":"chiba","n":"Chiba","j":"千葉県","r":"Kanto","b":34,"s":1},{"id":"tokyo","n":"Tokyo","j":"東京都","r":"Kanto","b":12,"s":19},{"id":"kanagawa","n":"Kanagawa","j":"神奈川県","r":"Kanto","b":12,"s":24},{"id":"niigata","n":"Niigata","j":"新潟県","r":"Chubu","b":93,"s":73},{"id":"toyama","n":"Toyama","j":"富山県","r":"Chubu","b":23,"s":1},{"id":"ishikawa","n":"Ishikawa","j":"石川県","r":"Chubu","b":33,"s":22},{"id":"fukui","n":"Fukui","j":"福井県","r":"Chubu","b":39,"s":21},{"id":"yamanashi","n":"Yamanashi","j":"山梨県","r":"Chubu","b":14,"s":0},{"id":"nagano","n":"Nagano","j":"長野県","r":"Chubu","b":83,"s":22},{"id":"gifu","n":"Gifu","j":"岐阜県","r":"Chubu","b":45,"s":11},{"id":"shizuoka","n":"Shizuoka","j":"静岡県","r":"Chubu","b":30,"s":33},{"id":"aichi","n":"Aichi","j":"愛知県","r":"Chubu","b":40,"s":3},{"id":"mie","n":"Mie","j":"三重県","r":"Kansai","b":37,"s":4},{"id":"shiga","n":"Shiga","j":"滋賀県","r":"Kansai","b":39,"s":18},{"id":"kyoto","n":"Kyoto","j":"京都府","r":"Kansai","b":45,"s":19},{"id":"osaka","n":"Osaka","j":"大阪府","r":"Kansai","b":14,"s":1},{"id":"hyogo","n":"Hyogo","j":"兵庫県","r":"Kansai","b":81,"s":36},{"id":"nara","n":"Nara","j":"奈良県","r":"Kansai","b":35,"s":12},{"id":"wakayama","n":"Wakayama","j":"和歌山県","r":"Kansai","b":20,"s":8},{"id":"tottori","n":"Tottori","j":"鳥取県","r":"Chugoku","b":17,"s":4},{"id":"shimane","n":"Shimane","j":"島根県","r":"Chugoku","b":36,"s":8},{"id":"okayama","n":"Okayama","j":"岡山県","r":"Chugoku","b":53,"s":1},{"id":"hiroshima","n":"Hiroshima","j":"広島県","r":"Chugoku","b":54,"s":29},{"id":"yamaguchi","n":"Yamaguchi","j":"山口県","r":"Chugoku","b":32,"s":19},{"id":"tokushima","n":"Tokushima","j":"徳島県","r":"Shikoku","b":17,"s":2},{"id":"kagawa","n":"Kagawa","j":"香川県","r":"Shikoku","b":7,"s":1},{"id":"ehime","n":"Ehime","j":"愛媛県","r":"Shikoku","b":46,"s":2},{"id":"kochi","n":"Kochi","j":"高知県","r":"Shikoku","b":13,"s":24},{"id":"fukuoka","n":"Fukuoka","j":"福岡県","r":"Kyushu","b":58,"s":10},{"id":"saga","n":"Saga","j":"佐賀県","r":"Kyushu","b":27,"s":28},{"id":"nagasaki","n":"Nagasaki","j":"長崎県","r":"Kyushu","b":15,"s":0},{"id":"kumamoto","n":"Kumamoto","j":"熊本県","r":"Kyushu","b":9,"s":3},{"id":"oita","n":"Oita","j":"大分県","r":"Kyushu","b":27,"s":3},{"id":"miyazaki","n":"Miyazaki","j":"宮崎県","r":"Kyushu","b":2,"s":0},{"id":"kagoshima","n":"Kagoshima","j":"鹿児島県","r":"Kyushu","b":3,"s":0},{"id":"okinawa","n":"Okinawa","j":"沖縄県","r":"Okinawa","b":1,"s":0}];
+
+const REGION_ORDER = ['Hokkaido','Tohoku','Kanto','Chubu','Kansai','Chugoku','Shikoku','Kyushu','Okinawa'];
+const REGION_LABEL = {Hokkaido:'Hokkaid\u014d',Tohoku:'T\u014dhoku',Kanto:'Kant\u014d',Chubu:'Ch\u016bbu',
+  Kansai:'Kansai',Chugoku:'Ch\u016bgoku',Shikoku:'Shikoku',Kyushu:'Ky\u016bsh\u016b',Okinawa:'Okinawa'};
+
+const rows = [];
+const seen = new Set(REGION_ORDER);
+const allRegions = REGION_ORDER.concat([...new Set(PREFS.map(p => p.r))].filter(r => !seen.has(r)));
+allRegions.forEach(r => {
+  const inRegion = PREFS.filter(p => p.r === r);
+  if (!inRegion.length) return;
+  rows.push('<div class="ddgroup">' + (REGION_LABEL[r] || r) + '</div>');
+  inRegion.forEach(p => {
+    const hot = p.n === 'Tochigi' ? ' hot' : '';
+    rows.push(
+      '<div class="ddrow' + hot + '">' +
+        '<span class="nm">' + p.n + '</span>' +
+        '<span class="jp">' + p.j + '</span>' +
+        '<span class="ct">' + p.b + ' breweries \u00b7 ' + p.s + ' sake</span>' +
+      '</div>'
+    );
+  });
+});
+document.querySelectorAll('[data-ddbody]').forEach(el => { el.innerHTML = rows.join(''); });
+document.querySelectorAll('[data-ddtoggle]').forEach(h => {
+  h.addEventListener('click', () => h.closest('[data-dd]').classList.toggle('open'));
+});
+</script>
+
+<script>
+window.__imgfall=function(el){
+  var exts=['.jpg','.jpeg','.png','.webp','.JPG','.JPEG','.PNG','.WEBP'];
+  var src=el.getAttribute('src');
+  var base=src.replace(/\.[A-Za-z]+$/,'');
+  var i=parseInt(el.dataset.try||'0',10);
+  while(i<exts.length && base+exts[i]===src){i++;}
+  if(i<exts.length){el.dataset.try=i+1;el.src=base+exts[i];return;}
+  el.remove();
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Where to buy</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d131a; --ink:#101820; --cream:#F5F0EB; --cream-deep:#EDE6DD;
+    --crimson:#9B1B1B; --crimson-bright:#F03D4D;
+    --mute:#5F5E5A; --faint:#8A8880;
+    --hair:rgba(16,24,32,0.10); --hair-soft:rgba(16,24,32,0.06);
+    --sans:'Supreme',system-ui,sans-serif; --serif:'Sentient',Georgia,serif;
+    --pad:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+
+  .page-head{max-width:1000px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:760px}
+
+  .stage{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .col-sub{color:#8f8b85;font-size:12.5px;line-height:1.6;margin-bottom:14px;min-height:52px}
+
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  .pmast{padding:0 var(--pad) 22px}
+  .ovr{font-size:12px;color:rgba(255,255,255,.55);font-weight:500}
+  .pmast h2{font-family:var(--serif);font-weight:400;font-size:32px;line-height:36px;color:var(--cream);
+    margin-top:3px;letter-spacing:-.4px}
+  .pmast .sub{font-size:13px;line-height:18px;color:rgba(245,240,235,.5);margin-top:10px;max-width:310px}
+
+  .imgslot{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot .fn{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;color:rgba(16,24,32,.42);
+    text-align:center;padding:0 8px;line-height:12px;word-break:break-all}
+  .imgslot.dark{background:linear-gradient(150deg,#1d2429,#12171b)}
+  .imgslot.dark .fn{color:rgba(245,240,235,.42)}
+
+  .filters{display:flex;gap:7px;padding:16px var(--pad) 4px;overflow-x:auto;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .chip{font-size:12px;font-weight:500;white-space:nowrap;padding:7px 13px;
+    border:1px solid var(--hair);border-radius:20px;color:var(--mute)}
+  .chip.on{background:var(--ink);color:var(--cream);border-color:var(--ink);font-weight:600}
+
+  .prow{display:flex;gap:13px;padding:15px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .pthumb{width:76px;height:76px;border-radius:3px;flex-shrink:0}
+  .pbody{flex:1;min-width:0}
+  .pkind{font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--mute)}
+  .pname{font-size:15px;font-weight:600;letter-spacing:-.25px;line-height:19px;margin-top:3px}
+  .pmeta{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:5px}
+  .ptags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+  .tag{font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;color:var(--mute);
+    border:1px solid var(--hair);border-radius:2px;padding:2px 6px}
+  .tag.p{color:var(--crimson);border-color:rgba(155,27,27,.28)}
+  .tag.ship{color:#2F6B45;border-color:rgba(47,107,69,.3)}
+
+  .ghead{display:flex;align-items:center;gap:12px;padding:26px var(--pad) 0}
+  .ghead .m{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);font-weight:600;white-space:nowrap}
+  .ghead .rule{flex:1;height:1px;background:var(--hair)}
+
+  /* detail */
+  .cover{height:224px}
+  .dtitle{padding:0 var(--pad)}
+  .dtitle .where{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-top:20px}
+  .dtitle h1{font-family:var(--serif);font-weight:400;font-size:29px;line-height:33px;letter-spacing:-.4px;margin-top:9px}
+  .dtitle .by{font-size:11.5px;color:var(--faint);margin-top:12px}
+
+  .cta{margin:18px var(--pad) 0;display:flex;gap:9px}
+  .btn{flex:1;text-align:center;padding:13px 0;border-radius:3px;font-size:13.5px;font-weight:600}
+  .btn.p{background:var(--crimson);color:#fff}
+  .btn.s{border:1px solid var(--hair);color:var(--ink)}
+
+  .card{margin:20px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:15px}
+  .card .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:12px}
+  .card dl{display:grid;grid-template-columns:92px 1fr;gap:8px 12px;font-size:12.5px;line-height:17px}
+  .card dt{color:var(--faint)}
+  .card dd{color:var(--ink)}
+  .yes{color:#2F6B45;font-weight:600}
+  .no{color:var(--mute)}
+
+  h2.sh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:25px;margin:30px 0 0;
+    letter-spacing:-.3px;padding:0 var(--pad)}
+  .body{padding:0 var(--pad)}
+  .body p{font-size:15px;line-height:23px;margin-top:13px;letter-spacing:-.1px}
+  .body b{font-weight:600}
+
+  figure{margin-top:20px}
+  figure .imgslot{height:200px}
+  figcaption{font-size:11.5px;line-height:16px;color:var(--faint);padding:9px var(--pad) 0}
+
+  .order{padding:0 var(--pad);margin-top:8px}
+  .oitem{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--hair-soft)}
+  .oitem .b{width:5px;height:5px;border-radius:50%;background:var(--crimson);margin-top:8px;flex-shrink:0}
+  .oitem .t{font-size:14.5px;font-weight:600;letter-spacing:-.2px;line-height:19px}
+  .oitem .d{font-size:13px;line-height:18px;color:var(--mute);margin-top:4px}
+  .oitem .pr{font-size:11.5px;color:var(--faint);margin-top:5px}
+
+  .verdict{margin:24px var(--pad) 0;border-left:2px solid var(--crimson);padding:3px 0 3px 15px}
+  .verdict .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--crimson);font-weight:600}
+  .verdict p{font-size:15px;line-height:23px;margin-top:9px}
+
+  .sechead{display:flex;align-items:center;gap:12px;padding:30px var(--pad) 0}
+  .secovr{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .sechead .rule{flex:1;height:1px;background:var(--hair)}
+  .sectitle{font-size:21px;letter-spacing:-.4px;font-weight:600;padding:6px var(--pad) 0}
+
+  .lrow{display:flex;gap:12px;padding:13px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .lthumb{width:62px;height:50px;border-radius:3px;flex-shrink:0}
+  .lrow .n{font-size:14px;font-weight:600;letter-spacing:-.2px}
+  .lrow .m{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:3px}
+  .lkind{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--faint)}
+
+  .footer{padding:36px 0 20px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;padding:10px 0 18px;flex-shrink:0}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);display:flex;align-items:center;justify-content:center}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:1000px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#e9e6e1;margin:26px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:860px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+  .notes code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b9b4ad;
+    background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px}
+  .flag{border-left:2px solid var(--crimson-bright);padding:10px 0 10px 16px;margin:16px 0;max-width:860px;
+    font-size:13.5px;line-height:1.65;color:#d6d1ca}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Shop — list and detail</h1>
+  <p>Sake and ceramics in one list. Every row says whether they post overseas.</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============ LIST ============ -->
+  <div class="col">
+    <div class="col-cap">1 · All shops</div>
+    <div class="col-sub">Sake and ceramics together, with filters. Most people buying one want the other.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div>
+        </div>
+        <div class="pmast">
+          <div class="ovr">Tochigi</div>
+          <h2>Where to buy</h2>
+          <div class="sub">Twelve shops. Nine will post to you.</div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="filters">
+          <span class="chip on">All</span>
+          <span class="chip">Sake</span>
+          <span class="chip">Ceramics</span>
+          <span class="chip">Ships abroad</span>
+          <span class="chip">Mashiko</span>
+        </div>
+
+        <div class="ghead"><div class="m">Sake</div><div class="rule"></div></div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-yuzawaya-saketen.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-yuzawaya-saketen.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Sake shop · Yunishigawa</div>
+            <div class="pname">Yuzawaya Saketen</div>
+            <div class="pmeta">A liquor shop with ten seats, so you can taste before you buy. Some bottles are made for this village and sold nowhere else.</div>
+            <div class="ptags"><span class="tag p">Drink in</span><span class="tag">Daily</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-shimadaya-miyamirai.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-shimadaya-miyamirai.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Sake shop · Utsunomiya</div>
+            <div class="pname">Shimadaya, Miya-Mirai</div>
+            <div class="pmeta">Taste before you buy. All 28 breweries in the prefecture, three glasses from ¥1,200, one minute from the station.</div>
+            <div class="ptags"><span class="tag p">Drink in</span><span class="tag ship">Ships JP</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-hoshidaya-saketen.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-hoshidaya-saketen.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Sake shop · Ōtawara</div>
+            <div class="pname">Hoshidaya Saketen</div>
+            <div class="pmeta">Open since 1921, out in the countryside at Kurobane. More Kyokkō than anywhere else, plus Daina, Tentaka and Senkin. They post within Japan.</div>
+            <div class="ptags"><span class="tag ship">Ships JP</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-mashidaya.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-mashidaya.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Sake shop · Mibu</div>
+            <div class="pname">Mashidaya</div>
+            <div class="pmeta">They write a proper tasting note for everything they stock, and they stock from all over Japan. Order online.</div>
+            <div class="ptags"><span class="tag ship">Ships JP</span></div>
+          </div>
+        </div>
+
+        <div class="ghead"><div class="m">Ceramics</div><div class="rule"></div></div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-toko-mashiko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-toko-mashiko.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">Tōkō</div>
+            <div class="pmeta">Forty potters under one roof, in a 130-year-old stone warehouse. There is a whole section of sake cups, and they post overseas.</div>
+            <div class="ptags"><span class="tag p">Sake cups</span><span class="tag ship">Ships abroad</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-zengo-yamani.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-zengo-yamani.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">Zengo, at Yamani Ōtsuka</div>
+            <div class="pmeta">The expensive end. Hamada Shōji, Shimaoka Tatsuzō, Matsuzaki Ken, Bernard Leach — work by Living National Treasures, and you can buy it.</div>
+            <div class="ptags"><span class="tag p">High end</span><span class="tag">Ask to ship</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-moegi-mashiko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-moegi-mashiko.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">Moegi</div>
+            <div class="pmeta">A hundred makers, including young ones nobody has heard of yet. Two branches — the one out in the hills has a café and better light.</div>
+            <div class="ptags"><span class="tag ship">Ships JP</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-pejite-mashiko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-pejite-mashiko.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">pejite</div>
+            <div class="pmeta">Mashiko pots and old Japanese furniture in a 70-year-old rice warehouse. The owner picks everything himself.</div>
+            <div class="ptags"><span class="tag ship">Ships JP</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-taiseigama.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-taiseigama.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">Taiseigama</div>
+            <div class="pmeta">Buy straight from the kiln, from the family that fires it. Wood-fired only, red pine, split in the yard.</div>
+            <div class="ptags"><span class="tag p">Buy at source</span></div>
+          </div>
+        </div>
+
+        <div class="prow">
+          <div class="pthumb imgslot"><img src="images/shop-starnet-mashiko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-starnet-mashiko.jpg</span></div>
+          <div class="pbody">
+            <div class="pkind">Ceramics · Mashiko</div>
+            <div class="pname">Starnet</div>
+            <div class="pmeta">Ceramics, food, clothes and a café, all sourced within about 40km. Open since 1998.</div>
+            <div class="ptags"><span class="tag ship">Ships JP</span><span class="tag">Closed Thu</span></div>
+          </div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL ============ -->
+  <div class="col">
+    <div class="col-cap">2 · Shop detail</div>
+    <div class="col-sub">Same shape as the venue review, with what to buy instead of what to order, plus a block on ordering from abroad.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <div class="cover imgslot dark">
+          <img src="images/shop-toko-cover.jpg" alt="" onerror="__imgfall(this)">
+          <span class="fn">shop-toko-cover.jpg</span>
+        </div>
+
+        <div class="dtitle">
+          <div class="where">Mashiko · Tochigi</div>
+          <h1>Tōkō</h1>
+          <div class="by">Visited August 2026</div>
+        </div>
+
+        <div class="cta">
+          <div class="btn p">Buy online</div>
+          <div class="btn s">Add to trip</div>
+        </div>
+
+        <div class="card">
+          <div class="h">The details</div>
+          <dl>
+            <dt>Location</dt><dd>Jōnaizaka, Mashiko, Haga-gun</dd>
+            <dt>Opened</dt><dd>1974, in a warehouse from 1898</dd>
+            <dt>Hours</dt><dd>10:00–18:00</dd>
+            <dt>Sells</dt><dd>Work by 40+ potters, plus other Tochigi crafts</dd>
+            <dt>Sake cups</dt><dd class="yes">A section of their own, in store and online</dd>
+            <dt>Ships</dt><dd class="yes">Japan and overseas</dd>
+            <dt>English</dt><dd class="no">Limited, but the objects speak</dd>
+            <dt>Cards</dt><dd class="yes">Yes</dd>
+          </dl>
+        </div>
+
+        <h2 class="sh">First impressions</h2>
+        <div class="body">
+          <p>The shop is in an old fertiliser merchant's warehouse built out of ōya stone, the same pale volcanic rock
+             the sake warehouses in this prefecture are made of. The front room is bright. The stone room behind it is
+             cooler and quieter, and that's where the good pieces are.</p>
+          <p>They opened in 1974 and have run over a thousand shows since. The exhibition changes every couple of
+             weeks, so it's worth checking what's on before you go.</p>
+          <p>Nothing's behind glass. Everything is priced and on open shelves, and you're meant to pick it up.</p>
+        </div>
+
+        <figure>
+          <div class="imgslot">
+            <img src="images/shop-toko-stone-room.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">shop-toko-stone-room.jpg</span>
+          </div>
+          <figcaption>The stone store at the back. The walls are the reason to photograph this place. Landscape.</figcaption>
+        </figure>
+
+        <h2 class="sh">What to buy</h2>
+        <div class="body">
+          <p>Around forty potters, nearly all from Mashiko. If you're only buying one thing, make it a guinomi — the small cup you drink sake from.</p>
+        </div>
+        <div class="order">
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">A guinomi from the sake section</div>
+            <div class="d">The sake cups are all kept in one place instead of mixed in with the plates, so you can compare
+               them. Thick and glazed for warm sake, thin for cold.</div>
+            <div class="pr">¥3,000–12,000</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Wadagama, in the six traditional glazes</div>
+            <div class="d">Persimmon, white, black, amber and two more. They carry enough of it that you can pick the
+               glaze you want rather than take what is left.</div>
+            <div class="pr">¥2,500–8,000</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">A katakuchi</div>
+            <div class="d">A lipped bowl you pour from. Better than a flask if you're drinking cold, and it stays out on the table rather than getting put away.</div>
+            <div class="pr">¥5,000–15,000</div>
+          </div></div>
+          <div class="oitem"><div class="b"></div><div>
+            <div class="t">Whatever is in the gallery that fortnight</div>
+            <div class="d">One potter at a time, and the only chance to see their whole range in one room. Check the dates before you book anything.</div>
+          </div></div>
+        </div>
+
+        <h2 class="sh">Ordering from abroad</h2>
+        <div class="body">
+          <p>They have an online shop with sake cups as their own category. Not everything in the building is listed —
+             message them if you saw something in the shop and can't find it.</p>
+          <p>They pack pottery properly, which is the thing that actually matters. Allow two to three weeks.</p>
+        </div>
+
+        <div class="verdict">
+          <div class="h">Verdict</div>
+          <p>Come here before you visit any kilns. You'll see forty potters in half an hour and work out whose work
+             you actually want.</p>
+        </div>
+
+        <div class="sechead"><div class="secovr">Nearby</div><div class="rule"></div></div>
+        <div class="sectitle">Where to go next</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/shop-zengo-yamani.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-zengo-yamani.jpg</span></div>
+          <div><div class="lkind">Ceramics · 2 min</div><div class="n">Zengo</div>
+            <div class="m">Two minutes away, and the expensive end — Hamada, Shimaoka, Matsuzaki.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/shop-moegi-mashiko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-moegi-mashiko.jpg</span></div>
+          <div><div class="lkind">Ceramics · 1 min</div><div class="n">Moegi</div>
+            <div class="m">Younger makers, and there is a café.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-tonoike.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-tonoike.jpg</span></div>
+          <div><div class="lkind">Brewery · 10 min</div><div class="n">Tonoike</div>
+            <div class="m">The only sake brewery in Mashiko. Buy the cup here, then go and fill it.</div></div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <h3>Two decisions made here</h3>
+  <ul>
+    <li><b>One list, not two tabs.</b> Sake and ceramics sit together with filter chips, because someone who came for a cup should run into a sake shop on the way.</li>
+    <li><b>Shipping is a tag on every row.</b> Ships abroad, Ships JP, or nothing. Nine of the twelve post, which makes the section useful to someone who is not going to Japan.</li>
+  </ul>
+
+  <div class="flag"><b>Invented for the mockup:</b> all prices, the hours, the card and English lines, the shipping
+     times, and the description of the interior. <b>Real:</b> the 1974 opening in an 1898 fertiliser merchant's
+     building, the ōya stone, 40+ potters, over 1,000 exhibitions, a show every two weeks, the Wadagama range in six
+     traditional glazes, and the online sake-cup collection.</div>
+
+  <h3>Images</h3>
+  <ul>
+    <li>List thumbnails: <code>shop-&lt;slug&gt;.jpg</code>, 76 × 76 square.</li>
+    <li>Detail cover: <code>shop-&lt;slug&gt;-cover.jpg</code>, 390 × 224.</li>
+    <li>One inline: the room. For Tōkō it has to be the stone store — <code>shop-toko-stone-room.jpg</code>.</li>
+    <li>New this page: <code>shop-mashidaya.jpg</code>, <code>shop-taiseigama.jpg</code>,
+        <code>shop-starnet-mashiko.jpg</code>, <code>brewery-tonoike.jpg</code>.</li>
+  </ul>
+</div>
+
+
+<script>
+window.__imgfall=function(el){
+  var exts=['.jpg','.jpeg','.png','.webp','.JPG','.JPEG','.PNG','.WEBP'];
+  var src=el.getAttribute('src');
+  var base=src.replace(/\.[A-Za-z]+$/,'');
+  var i=parseInt(el.dataset.try||'0',10);
+  while(i<exts.length && base+exts[i]===src){i++;}
+  if(i<exts.length){el.dataset.try=i+1;el.src=base+exts[i];return;}
+  el.remove();
+};
+</script>
+</body>
+</html>

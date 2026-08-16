@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Events</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d131a; --ink:#101820; --cream:#F5F0EB; --cream-deep:#EDE6DD;
+    --crimson:#9B1B1B; --crimson-bright:#F03D4D;
+    --mute:#5F5E5A; --faint:#8A8880;
+    --hair:rgba(16,24,32,0.10); --hair-soft:rgba(16,24,32,0.06);
+    --sans:'Supreme',system-ui,sans-serif; --serif:'Sentient',Georgia,serif;
+    --pad:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+
+  .page-head{max-width:1320px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:760px}
+
+  .stage{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .col-sub{color:#8f8b85;font-size:12.5px;line-height:1.6;margin-bottom:14px;min-height:52px}
+
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column;position:relative}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  .pmast{padding:0 var(--pad) 22px}
+  .ovr{font-size:12px;color:rgba(255,255,255,.55);font-weight:500}
+  .pmast h2{font-family:var(--serif);font-weight:400;font-size:32px;line-height:36px;color:var(--cream);
+    margin-top:3px;letter-spacing:-.4px}
+  .pmast .sub{font-size:13px;line-height:18px;color:rgba(245,240,235,.5);margin-top:10px;max-width:300px}
+
+  /* image slots */
+  .imgslot{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .imgslot .fn{font-family:ui-monospace,Menlo,monospace;font-size:8.5px;color:rgba(16,24,32,.42);
+    text-align:center;padding:0 8px;line-height:12px;word-break:break-all}
+  .imgslot.dark{background:linear-gradient(150deg,#1d2429,#12171b)}
+  .imgslot.dark .fn{color:rgba(245,240,235,.42)}
+
+  /* month heading */
+  .mhead{display:flex;align-items:center;gap:12px;padding:26px var(--pad) 0}
+  .mhead .m{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);font-weight:600;white-space:nowrap}
+  .mhead .rule{flex:1;height:1px;background:var(--hair)}
+
+  /* event row */
+  .erow{display:flex;gap:13px;padding:14px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start;cursor:pointer}
+  .ethumb{width:74px;height:74px;border-radius:3px;flex-shrink:0}
+  .ebody{flex:1;min-width:0}
+  .edate{font-size:11px;letter-spacing:.6px;color:var(--crimson);font-weight:600;text-transform:uppercase}
+  .ename{font-size:15px;font-weight:600;letter-spacing:-.25px;line-height:19px;margin-top:4px}
+  .emeta{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:5px}
+  .etags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+  .tag{font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;color:var(--mute);
+    border:1px solid var(--hair);border-radius:2px;padding:2px 6px}
+  .tag.sell{color:var(--crimson);border-color:rgba(155,27,27,.3)}
+
+  /* ---------- DETAIL ---------- */
+  .cover{height:224px}
+  .dtitle{padding:0 var(--pad)}
+  .dtitle .when{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--crimson);font-weight:600;margin-top:20px}
+  .dtitle h1{font-family:var(--serif);font-weight:400;font-size:29px;line-height:33px;letter-spacing:-.4px;margin-top:9px}
+  .dtitle .std{font-size:14px;line-height:20px;color:var(--mute);margin-top:11px}
+
+  .cta{margin:20px var(--pad) 0;display:flex;gap:9px}
+  .btn{flex:1;text-align:center;padding:13px 0;border-radius:3px;font-size:13.5px;font-weight:600;letter-spacing:-.1px}
+  .btn.p{background:var(--crimson);color:#fff}
+  .btn.s{border:1px solid var(--hair);color:var(--ink)}
+
+  .facts{margin:22px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:15px}
+  .facts .h{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mute);font-weight:600;margin-bottom:12px}
+  .facts dl{display:grid;grid-template-columns:80px 1fr;gap:8px 12px;font-size:12.5px;line-height:17px}
+  .facts dt{color:var(--faint)}
+  .facts dd{color:var(--ink)}
+
+  h2.sh{font-family:var(--serif);font-weight:400;font-size:21px;line-height:25px;margin:30px 0 0;
+    letter-spacing:-.3px;padding:0 var(--pad)}
+  .body{padding:0 var(--pad)}
+  .body p{font-size:15px;line-height:23px;margin-top:13px;letter-spacing:-.1px}
+  .body b{font-weight:600}
+
+  figure{margin-top:20px}
+  figure .imgslot{height:200px}
+  figcaption{font-size:11.5px;line-height:16px;color:var(--faint);padding:9px var(--pad) 0}
+
+  .know{padding:0 var(--pad);margin-top:12px}
+  .kitem{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--hair-soft)}
+  .kitem .b{width:5px;height:5px;border-radius:50%;background:var(--crimson);margin-top:8px;flex-shrink:0}
+  .kitem .t{font-size:14px;font-weight:600;letter-spacing:-.2px;line-height:18px}
+  .kitem .d{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:3px}
+
+  /* linked rows */
+  .lrow{display:flex;gap:12px;padding:13px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .lthumb{width:62px;height:50px;border-radius:3px;flex-shrink:0}
+  .lrow .n{font-size:14px;font-weight:600;letter-spacing:-.2px}
+  .lrow .m{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:3px}
+  .lkind{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--faint)}
+
+  .secovr{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .sechead{display:flex;align-items:center;gap:12px;padding:30px var(--pad) 0}
+  .sechead .rule{flex:1;height:1px;background:var(--hair)}
+  .sectitle{font-size:21px;letter-spacing:-.4px;font-weight:600;padding:6px var(--pad) 0}
+
+  .footer{padding:36px 0 20px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;padding:10px 0 18px;flex-shrink:0}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);display:flex;align-items:center;justify-content:center}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:1320px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#e9e6e1;margin:26px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:860px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+  .notes code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b9b4ad;
+    background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px}
+  .flag{border-left:2px solid var(--crimson-bright);padding:10px 0 10px 16px;margin:16px 0;max-width:860px;
+    font-size:13.5px;line-height:1.65;color:#d6d1ca}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Events — list and detail template</h1>
+  <p>Dates are invented placeholders in a plausible pattern. The detail page is one template — every event uses
+     the same blocks, and blocks that do not apply are left out.</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============ LIST ============ -->
+  <div class="col">
+    <div class="col-cap">1 · All events</div>
+    <div class="col-sub">By month, running forward from now. Each row says when it is and whether you need a ticket.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div>
+        </div>
+        <div class="pmast">
+          <div class="ovr">Tochigi</div>
+          <h2>What's on</h2>
+          <div class="sub">Seven things worth planning a trip around. Most happen once a year.</div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <div class="mhead"><div class="m">September 2026</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-sasara-summit.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-sasara-summit.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Sat 5 Sep</div>
+            <div class="ename">Sasara Light Cube — Tochigi Sake Summit</div>
+            <div class="emeta">Taste 24 of the prefecture's breweries in one afternoon, in one room, five minutes from Utsunomiya station.</div>
+            <div class="etags"><span class="tag">Ticketed</span><span class="tag">Utsunomiya</span></div>
+          </div>
+        </div>
+
+        <div class="mhead"><div class="m">November 2026</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-mashiko-fair-autumn.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-mashiko-fair-autumn.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Fri 6 – Tue 10 Nov</div>
+            <div class="ename">Mashiko Pottery Fair, autumn</div>
+            <div class="emeta">Several hundred potters selling from tents along one street. Quieter than the spring fair, so you can talk to the person who made it.</div>
+            <div class="etags"><span class="tag">Free</span><span class="tag">Mashiko</span></div>
+          </div>
+        </div>
+
+        <div class="mhead"><div class="m">January 2027</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-shibori-open-days.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-shibori-open-days.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Mid Jan – late Mar</div>
+            <div class="ename">Shibori season — brewery open days</div>
+            <div class="emeta">Breweries open their doors while they are pressing the new sake. Dates go up late, so check each one.</div>
+            <div class="etags"><span class="tag">Varies</span><span class="tag">Prefecture-wide</span></div>
+          </div>
+        </div>
+
+        <div class="mhead"><div class="m">February 2027</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-kamakura-yunishigawa.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-kamakura-yunishigawa.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Fri 29 Jan – Sun 28 Feb</div>
+            <div class="ename">Yunishigawa Kamakura Festival</div>
+            <div class="emeta">Hundreds of small snow huts along the river, lit with candles after dark. Same village as the Yunishigawa piece — do both in one trip.</div>
+            <div class="etags"><span class="tag">Free</span><span class="tag">Nikko</span></div>
+          </div>
+        </div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-shimotsukare-hatsuuma.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-shimotsukare-hatsuuma.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Fri 5 Feb — one week</div>
+            <div class="ename">Hatsuuma — shimotsukare season</div>
+            <div class="emeta">One week a year when shimotsukare turns up, made with sake lees and a salmon head. Offered at Inari shrines, then gone.</div>
+            <div class="etags"><span class="tag">Seasonal</span><span class="tag">Prefecture-wide</span></div>
+          </div>
+        </div>
+
+        <div class="mhead"><div class="m">March 2027</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-shimotsuke-toji-tokyo.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-shimotsuke-toji-tokyo.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Wed 17 Mar</div>
+            <div class="ename">Shimotsuke Tōji new sake release, Tokyo</div>
+            <div class="emeta">The brewers organise it and stand behind their own tables. Tokyo in March, Osaka in May.</div>
+            <div class="etags"><span class="tag sell">Sells out</span><span class="tag">Ticketed</span><span class="tag">Tokyo</span></div>
+          </div>
+        </div>
+
+        <div class="mhead"><div class="m">April 2027</div><div class="rule"></div></div>
+        <div class="erow">
+          <div class="ethumb imgslot"><img src="images/event-mashiko-fair-spring.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-mashiko-fair-spring.jpg</span></div>
+          <div class="ebody">
+            <div class="edate">Thu 29 Apr – Wed 5 May</div>
+            <div class="ename">Mashiko Pottery Fair, spring</div>
+            <div class="emeta">Golden Week, and the busiest one. Go first thing.</div>
+            <div class="etags"><span class="tag">Free</span><span class="tag">Mashiko</span></div>
+          </div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL ============ -->
+  <div class="col">
+    <div class="col-cap">2 · Event detail — template</div>
+    <div class="col-sub">Nine blocks, in order. Any that don't apply to a given event are dropped, not left empty.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <!-- 1 · COVER -->
+        <div class="cover imgslot dark">
+          <img src="images/event-shimotsuke-toji-cover.jpg" alt="" onerror="__imgfall(this)">
+          <span class="fn">event-shimotsuke-toji-cover.jpg</span>
+        </div>
+
+        <!-- 2 · TITLE -->
+        <div class="dtitle">
+          <div class="when">Wed 17 March 2027 · 18:00–20:30</div>
+          <h1>Shimotsuke Tōji new sake release</h1>
+          <div class="std">Taste this year's new sake from 26 Tochigi breweries without leaving Tokyo. The brewers organise it and
+             pour it themselves.</div>
+        </div>
+
+        <!-- 3 · ACTIONS -->
+        <div class="cta">
+          <div class="btn p">Tickets</div>
+          <div class="btn s">Add to trip</div>
+        </div>
+
+        <!-- 4 · FACTS -->
+        <div class="facts">
+          <div class="h">The basics</div>
+          <dl>
+            <dt>Date</dt><dd>Wed 17 March 2027</dd>
+            <dt>Time</dt><dd>18:00–20:30, doors 17:45</dd>
+            <dt>Where</dt><dd>Tokyo — venue announced with tickets</dd>
+            <dt>Price</dt><dd>¥6,000 advance</dd>
+            <dt>Tickets</dt><dd>e+ (eplus), on sale early February</dd>
+            <dt>Language</dt><dd>Japanese. Some brewers speak English.</dd>
+            <dt>Also</dt><dd>Osaka, Wed 19 May 2027</dd>
+          </dl>
+        </div>
+
+        <!-- 5 · WHY -->
+        <h2 class="sh">Why this one</h2>
+        <div class="body">
+          <p>Most sake regions have an old guild that trains and certifies brewers. Tochigi had none, so in 2006 a
+             group of young brewery workers built their own: a practical exam, a blind tasting and a written paper,
+             run through the prefectural technology centre. Twenty-two people had passed by 2016.</p>
+          <p>This is the one night they all pour together, and the people behind the tables are the ones who made it.
+             You can ask them anything, and they'll tell you.</p>
+          <p>Buy early. Tokyo sold out about three weeks ahead in 2026.</p>
+        </div>
+
+        <!-- 6 · IMAGE -->
+        <figure>
+          <div class="imgslot">
+            <img src="images/event-shimotsuke-toji-room.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">event-shimotsuke-toji-room.jpg</span>
+          </div>
+          <figcaption>The room, mid-session. Tables and people, not bottles on a white background. Landscape.</figcaption>
+        </figure>
+
+        <!-- 7 · PRACTICAL -->
+        <h2 class="sh">Before you go</h2>
+        <div class="know">
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Buy the day sales open</div>
+            <div class="d">Early February, on e+. Nothing on the door.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Eat first</div>
+            <div class="d">Two and a half hours, 26 tables, and barely any food.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Start at the far end</div>
+            <div class="d">Everyone starts at the door and works right. The last tables are quiet for the first hour,
+               so that's where you get to talk to people.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Ask who made it</div>
+            <div class="d">Certified brewers wear a crimson jacket. If you want the person who actually made it rather than someone from the office, look for the jacket.</div>
+          </div></div>
+        </div>
+
+        <!-- 8 · WHAT'S POURED -->
+        <div class="sechead"><div class="secovr">Breweries</div><div class="rule"></div></div>
+        <div class="sectitle">Who you can taste</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-senkin.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-senkin.jpg</span></div>
+          <div><div class="lkind">Brewery · Sakura</div><div class="n">Senkin</div>
+            <div class="m">Kimoto only, no added yeast, wooden vats. Usually the busiest table in the room, so go early.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-sohomare.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-sohomare.jpg</span></div>
+          <div><div class="lkind">Brewery · Ichikai</div><div class="n">Sōhomare</div>
+            <div class="m">Kimoto house. Over 80% of what they make never leaves Tochigi. Hard to try any other way.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-matsui.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-matsui.jpg</span></div>
+          <div><div class="lkind">Brewery · Shioya</div><div class="n">Matsui — Matsu no Kotobuki</div>
+            <div class="m">Matsui Nobutaka was the first brewer ever certified under this system. He is usually there.</div></div>
+        </div>
+
+        <!-- 9 · NEARBY / NEXT -->
+        <div class="sechead"><div class="secovr">Nearby</div><div class="rule"></div></div>
+        <div class="sectitle">Where to go next</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/event-shibori-open-days.jpg" alt="" onerror="__imgfall(this)"><span class="fn">event-shibori-open-days.jpg</span></div>
+          <div><div class="lkind">Event · Mar</div><div class="n">Shibori season is still running</div>
+            <div class="m">Same month. Go up to Tochigi the next morning and visit one of the breweries you tasted.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/shop-shimadaya-miyamirai.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-shimadaya-miyamirai.jpg</span></div>
+          <div><div class="lkind">Shop · Utsunomiya</div><div class="n">Shimadaya, Miya-Mirai</div>
+            <div class="m">One minute from Utsunomiya station. Buy the bottle you liked in Tokyo.</div></div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DETAIL 2 · SASARA ============ -->
+  <div class="col">
+    <div class="col-cap">3 · Detail — first event in the list</div>
+    <div class="col-sub">Sasara Light Cube. Same nine blocks as the template, different content, one block used differently.</div>
+    <div class="phone">
+      <div class="mast">
+        <div class="status"></div>
+        <div class="appbar">
+          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abC">SAKE<i>YŌ</i></div>
+          <div class="abR">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll">
+
+        <div class="cover imgslot dark">
+          <img src="images/event-sasara-summit-cover.jpg" alt="" onerror="__imgfall(this)">
+          <span class="fn">event-sasara-summit-cover.jpg</span>
+        </div>
+
+        <div class="dtitle">
+          <div class="when">Sat 5 September 2026 · two sessions</div>
+          <h1>Sasara Light Cube — Tochigi Sake Summit</h1>
+          <div class="std">Taste 24 of the prefecture's 28 breweries in one afternoon, in one hall, five minutes from
+             Utsunomiya station.</div>
+        </div>
+
+        <div class="cta">
+          <div class="btn p">Tickets</div>
+          <div class="btn s">Add to trip</div>
+        </div>
+
+        <div class="facts">
+          <div class="h">The basics</div>
+          <dl>
+            <dt>Date</dt><dd>Sat 5 September 2026</dd>
+            <dt>Sessions</dt><dd>12:30–14:30 · 16:00–18:00</dd>
+            <dt>Where</dt><dd>Light Cube Utsunomiya, 5 min from the station east exit</dd>
+            <dt>Price</dt><dd>¥4,500 advance · ¥5,000 door</dd>
+            <dt>Pours</dt><dd>Unlimited within your session</dd>
+            <dt>Language</dt><dd>Japanese. Brewery staff, so patience helps.</dd>
+            <dt>Getting home</dt><dd>Utsunomiya is 50 min from Tokyo on the Shinkansen</dd>
+          </dl>
+        </div>
+
+        <h2 class="sh">Why this one</h2>
+        <div class="body">
+          <p>Until 2024 the brewers' association ran a permanent tasting room in Utsunomiya called Sasara. It opened
+             in 1999, weekday evenings only, two hours, ten glasses a person — kept small on purpose so it would not
+             take trade from the bars nearby.</p>
+          <p>The building was falling apart, the association moved out, and Sasara closed. This replaced it: one day
+             a year, twenty-four breweries, in a hall.</p>
+          <p>If you only get one day in Tochigi, make it this one. Nowhere else puts this many breweries in front of you at once.</p>
+        </div>
+
+        <figure>
+          <div class="imgslot">
+            <img src="images/event-sasara-summit-hall.jpg" alt="" onerror="__imgfall(this)">
+            <span class="fn">event-sasara-summit-hall.jpg</span>
+          </div>
+          <figcaption>The hall in session. Wide, tables and people. Show the scale — that is the selling point.
+             Landscape.</figcaption>
+        </figure>
+
+        <h2 class="sh">Before you go</h2>
+        <div class="know">
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Take the afternoon session</div>
+            <div class="d">The lunchtime session is busier. Either way you are out by six with time to eat.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Two dozen breweries is too many</div>
+            <div class="d">Pick eight and do them properly. Four to start with are below.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Use the water</div>
+            <div class="d">There's water on every table. Two hours of unlimited pours goes badly without it.</div>
+          </div></div>
+          <div class="kitem"><div class="b"></div><div>
+            <div class="t">Don't buy here — buy after</div>
+            <div class="d">Note what you liked and buy it at Shimadaya by the station instead. Same bottles, and you
+               are not carrying them round the hall.</div>
+          </div></div>
+        </div>
+
+        <div class="sechead"><div class="secovr">Breweries</div><div class="rule"></div></div>
+        <div class="sectitle">Who to taste first</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-sohomare.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-sohomare.jpg</span></div>
+          <div><div class="lkind">Brewery · Ichikai</div><div class="n">Sōhomare</div>
+            <div class="m">Over 80% of what they make stays inside Tochigi. This is the easiest place anywhere to try
+               it.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-tentaka.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-tentaka.jpg</span></div>
+          <div><div class="lkind">Brewery · Ōtawara</div><div class="n">Tentaka</div>
+            <div class="m">Certified organic, with their own farm on land other people gave up on. Ask them about it.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-tsuji-zenbei.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-tsuji-zenbei.jpg</span></div>
+          <div><div class="lkind">Brewery · Mooka</div><div class="n">Tsuji Zenbei</div>
+            <div class="m">Founded 1673, the oldest brewery in Tochigi, and they grow their own rice.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/brewery-shimazaki.jpg" alt="" onerror="__imgfall(this)"><span class="fn">brewery-shimazaki.jpg</span></div>
+          <div><div class="lkind">Brewery · Nasukarasuyama</div><div class="n">Shimazaki</div>
+            <div class="m">Ask for the ones aged in the tunnel. Then go and walk through it — it costs ¥200.</div></div>
+        </div>
+
+        <div class="sechead"><div class="secovr">Nearby</div><div class="rule"></div></div>
+        <div class="sectitle">Where to go next</div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/shop-shimadaya-miyamirai.jpg" alt="" onerror="__imgfall(this)"><span class="fn">shop-shimadaya-miyamirai.jpg</span></div>
+          <div><div class="lkind">Shop · Utsunomiya</div><div class="n">Shimadaya, Miya-Mirai</div>
+            <div class="m">One minute from the station and open until 20:30, so you can go straight there afterwards.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/place-masashi-gyoza.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-masashi-gyoza.jpg</span></div>
+          <div><div class="lkind">Eat · Utsunomiya</div><div class="n">Masashi, Miyajima Honten</div>
+            <div class="m">Gyoza and nothing else, about ¥300 a plate. What you want after two hours of tasting.</div></div>
+        </div>
+        <div class="lrow">
+          <div class="lthumb imgslot"><img src="images/place-mashiko-day.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-mashiko-day.jpg</span></div>
+          <div><div class="lkind">Next day · Mashiko</div><div class="n">Buy a cup in the morning</div>
+            <div class="m">Forty minutes away. Walk the pottery street, then go to Tonoike, the only brewery in the town.</div></div>
+        </div>
+
+        <div class="footer"><div class="glyph">· · ·</div></div>
+      </div>
+
+      <div class="bnav">
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+        <div class="bcell on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+        <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg><div class="bl">Explore</div></div>
+        <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <div class="flag"><b>All dates are invented.</b> They follow the real pattern — Mashiko at Golden Week and in
+     November, the tōji release in Tokyo in spring and Osaka in May, shibori through Jan–Mar — but not one of them is
+     confirmed. Replace before anything goes live, and do not put these in front of the prefecture as fact.</div>
+
+  <h3>The template — nine blocks, in order</h3>
+  <ul>
+    <li><b>1 Cover.</b> One image, 390 × 224.</li>
+    <li><b>2 Title.</b> Date and time in crimson above the name, then a two-line standfirst saying plainly what it is.</li>
+    <li><b>3 Actions.</b> Primary is Tickets, or Directions if it's free. Secondary is always Add to trip.</li>
+    <li><b>4 The basics.</b> Fixed field list. Language is in there deliberately — it's the question a foreign visitor actually has.</li>
+    <li><b>5 Why this one.</b> Three paragraphs maximum. The reason to give up an evening.</li>
+    <li><b>6 One image.</b> People, not product.</li>
+    <li><b>7 Before you go.</b> Four practical things. Ideally at least one that only someone who has been would know — here, start at the far end of the room.</li>
+    <li><b>8 What you'll find.</b> Links out to breweries, makers or shops. This is where the event stops being a dead end.</li>
+    <li><b>9 Make a weekend of it.</b> Links to another event, a shop or a place nearby.</li>
+  </ul>
+
+  <h3>Dropping blocks</h3>
+  <ul>
+    <li><b>Shimotsukare</b> has no tickets, no venue and no time. It keeps 1, 2, 5, 6, 7 and 8 — and 8 links to restaurants serving it rather than breweries.</li>
+    <li><b>Mashiko fair</b> drops Tickets for Directions, and block 8 links to potters and galleries.</li>
+    <li><b>Shibori open days</b> is a set of dates rather than one, so block 4 becomes a per-brewery list and block 3 loses the primary button.</li>
+  </ul>
+
+  <h3>Images</h3>
+  <ul>
+    <li>List thumbnails: <code>event-&lt;slug&gt;.jpg</code>, 74 × 74 square.</li>
+    <li>Detail cover: <code>event-&lt;slug&gt;-cover.jpg</code>, 390 × 224.</li>
+    <li>Detail inline: <code>event-&lt;slug&gt;-room.jpg</code> or similar, 390 × 200.</li>
+    <li>Linked rows reuse the existing <code>brewery-</code> and <code>shop-</code> files.</li>
+  </ul>
+</div>
+
+
+<script>
+window.__imgfall=function(el){
+  var exts=['.jpg','.jpeg','.png','.webp','.JPG','.JPEG','.PNG','.WEBP'];
+  var src=el.getAttribute('src');
+  var base=src.replace(/\.[A-Za-z]+$/,'');
+  var i=parseInt(el.dataset.try||'0',10);
+  while(i<exts.length && base+exts[i]===src){i++;}
+  if(i<exts.length){el.dataset.try=i+1;el.src=base+exts[i];return;}
+  el.remove();
+};
+</script>
+</body>
+</html>
