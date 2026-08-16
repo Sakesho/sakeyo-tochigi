@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Saved in Tochigi</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0d131a;--crimson:#9B1B1B;--crimson-bright:#F03D4D;--cream:#F5F0EB;--cream-deep:#EDE6DD;
+    --ink:#101820;--mute:#5F5E5A;--faint:#8A8880;--hair:rgba(16,24,32,.10);--hair-soft:rgba(16,24,32,.06);
+    --amber:#8A6A20;--sage:#2F6B45;
+    --sans:'Supreme',system-ui,sans-serif;--serif:'Sentient',Georgia,serif;--pad:22px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#1a1a1c;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .page-head{max-width:1320px;margin:0 auto 26px;color:#e9e6e1}
+  .page-head h1{font-family:var(--serif);font-size:26px;font-weight:400;letter-spacing:-.4px;margin-bottom:8px}
+  .page-head p{font-size:13.5px;line-height:1.65;color:#a8a49e;max-width:780px}
+  .stage{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+  .col{width:390px}
+  .col-cap{color:#e9e6e1;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+  .col-sub{color:#8f8b85;font-size:12.5px;line-height:1.6;margin-bottom:14px;min-height:52px}
+  .phone{width:390px;height:844px;background:var(--cream);border-radius:38px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);display:flex;flex-direction:column}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+  .mast{background:var(--black);flex-shrink:0}
+  .status{height:38px}
+  .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
+  .abL,.abR{width:80px;display:flex;align-items:center;gap:14px}
+  .abR{justify-content:flex-end}
+  .abC{flex:1;text-align:center;font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff}
+  .abC i{font-style:normal;color:var(--crimson-bright)}
+  .ic{width:20px;height:20px;stroke:rgba(255,255,255,.85);fill:none;stroke-width:1.7}
+
+  .tmast{padding:0 var(--pad) 20px}
+  .ovr{font-size:12px;color:rgba(255,255,255,.55);font-weight:500}
+  .tmast h2{font-family:var(--serif);font-weight:400;font-size:30px;line-height:34px;color:var(--cream);
+    margin-top:3px;letter-spacing:-.4px}
+  .tmeta{font-size:12.5px;line-height:17px;color:rgba(245,240,235,.5);margin-top:9px;max-width:300px}
+
+  .segs{display:flex;background:var(--black);padding:0 var(--pad) 0;border-top:1px solid rgba(245,240,235,.08)}
+  .seg{flex:1;text-align:center;padding:12px 0 11px;font-size:12.5px;font-weight:500;
+    color:rgba(245,240,235,.45);border-bottom:2px solid transparent}
+  .seg.on{color:#fff;font-weight:600;border-bottom-color:var(--crimson-bright)}
+
+  .chips{display:flex;gap:7px;padding:15px var(--pad) 3px;overflow-x:auto;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{font-size:12px;font-weight:500;white-space:nowrap;padding:7px 13px;border:1px solid var(--hair);
+    border-radius:20px;color:var(--mute)}
+  .chip.on{background:var(--ink);color:var(--cream);border-color:var(--ink);font-weight:600}
+
+  /* place header */
+  .place{display:flex;align-items:baseline;gap:10px;padding:24px var(--pad) 0}
+  .place .n{font-size:20px;font-weight:600;letter-spacing:-.4px}
+  .place .c{font-size:12px;color:var(--faint);font-weight:500}
+  .place .go{margin-left:auto;font-size:12.5px;color:var(--crimson);font-weight:600;white-space:nowrap}
+  .placesub{font-size:12.5px;line-height:17px;color:var(--mute);padding:5px var(--pad) 0}
+
+  /* type header */
+  .type{display:flex;align-items:center;gap:10px;padding:16px var(--pad) 6px}
+  .type .l{font-size:9.5px;letter-spacing:1.9px;text-transform:uppercase;color:var(--crimson);
+    font-weight:700;white-space:nowrap}
+  .type .rule{flex:1;height:1px;background:var(--hair)}
+
+  /* saved row */
+  .row{display:flex;gap:12px;padding:11px var(--pad);border-bottom:1px solid var(--hair-soft);align-items:flex-start}
+  .thumb{width:54px;height:54px;border-radius:3px;flex-shrink:0;
+    background:repeating-linear-gradient(135deg,#e4dcd2 0 7px,#ded5ca 7px 14px)}
+  .bd{flex:1;min-width:0}
+  .nm{font-size:14.5px;font-weight:600;letter-spacing:-.25px;line-height:18px}
+  .dt{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:3px}
+  .st{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+  .tag{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:600;color:var(--mute);
+    border:1px solid var(--hair);border-radius:2px;padding:2px 6px}
+  .tag.p{color:var(--crimson);border-color:rgba(155,27,27,.28)}
+  .tag.warn{color:var(--amber);border-color:rgba(138,106,32,.32)}
+  .open{font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:5px}
+  .open.y{color:var(--sage)}
+  .open.n{color:var(--faint)}
+  .open i{width:6px;height:6px;border-radius:50%;background:currentColor;display:block}
+
+  /* walk order */
+  .walk{margin:14px var(--pad) 0;border:1px solid var(--hair);border-radius:3px;background:var(--cream-deep);padding:14px}
+  .walk .h{font-size:9.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--mute);font-weight:700}
+  .walk p{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:6px}
+  .steps{display:flex;align-items:center;gap:6px;margin-top:11px;flex-wrap:wrap}
+  .step{font-size:12px;font-weight:600;letter-spacing:-.2px}
+  .arr{color:var(--faint);font-size:11px}
+
+  /* map */
+  .map{height:200px;margin:14px var(--pad) 0;border-radius:3px;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,#e4ded4,#d6cec1)}
+  .map .pin{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--crimson);
+    border:2px solid var(--cream);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .map .lbl{position:absolute;font-size:10px;font-weight:600;color:var(--ink);white-space:nowrap}
+  .map .note{position:absolute;left:11px;bottom:9px;font-size:10px;color:var(--mute)}
+
+  .empty{margin:16px var(--pad) 0;border:1px dashed var(--hair);border-radius:3px;padding:16px;text-align:center}
+  .empty .n{font-size:13.5px;font-weight:600}
+  .empty .d{font-size:12.5px;line-height:17px;color:var(--mute);margin-top:5px}
+
+  .footer{padding:32px 0 18px;text-align:center}
+  .footer .glyph{font-family:var(--serif);font-size:19px;color:var(--faint);letter-spacing:5px}
+  .bnav{background:#fff;border-top:1px solid rgba(16,24,32,.10);display:flex;align-items:center;padding:10px 0 18px;flex-shrink:0}
+  .bcell{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .bcell svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  .bcell.on svg{stroke:var(--crimson)}
+  .bl{font-size:10px;color:var(--faint);font-weight:500}
+  .bcell.on .bl{color:var(--crimson);font-weight:600}
+  .fabslot{flex:1;display:flex;justify-content:center}
+  .fab{width:52px;height:52px;border-radius:50%;margin-top:-4px;
+    background:linear-gradient(135deg,#c43030,#9B1B1B 55%,#7A1515);display:flex;align-items:center;justify-content:center}
+  .fab svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8}
+
+  .notes{max-width:1320px;margin:44px auto 0;color:#c9c4bd}
+  .notes h3{font-family:var(--serif);font-size:19px;font-weight:400;color:#e9e6e1;margin:24px 0 10px}
+  .notes ul{list-style:none;display:grid;gap:9px;max-width:880px}
+  .notes li{font-size:13.5px;line-height:1.65;padding-left:17px;position:relative}
+  .notes li:before{content:'—';position:absolute;left:0;color:#6f6a64}
+  .notes b{color:#e9e6e1;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Saved in Tochigi</h1>
+  <p>By place, then by type. No schedule, no times of day, no travel legs — the app doesn't know about your hotel
+     or the shrine you're seeing at eleven, so it shouldn't pretend to plan your day. It answers one question:
+     what have I saved that's near me, and is it open.</p>
+</div>
+
+<div class="stage">
+
+<!-- ===================== 1 · ALL SAVED ===================== -->
+<div class="col">
+  <div class="col-cap">1 · Everything saved</div>
+  <div class="col-sub">Grouped by town, biggest cluster first. Type filters across the top.</div>
+  <div class="phone">
+    <div class="mast">
+      <div class="status"></div>
+      <div class="appbar">
+        <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="abC">SAKE<i>YŌ</i></div>
+        <div class="abR"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/></svg></div>
+      </div>
+      <div class="tmast">
+        <div class="ovr">Tochigi</div>
+        <h2>Saved</h2>
+        <div class="tmeta">Sixteen places across six towns. Nothing here is a schedule — it's what you liked, sorted by where it is.</div>
+      </div>
+      <div class="segs">
+        <div class="seg on">By place</div>
+        <div class="seg">By type</div>
+        <div class="seg">Map</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="chips">
+        <span class="chip on">All 16</span>
+        <span class="chip">Eat &amp; drink</span>
+        <span class="chip">Sake shops</span>
+        <span class="chip">Shops &amp; makers</span>
+        <span class="chip">Breweries</span>
+        <span class="chip">Open now</span>
+      </div>
+
+      <!-- UTSUNOMIYA -->
+      <div class="place"><div class="n">Utsunomiya</div><div class="c">5</div><div class="go">Map →</div></div>
+      <div class="placesub">All within twenty minutes of the station on foot.</div>
+
+      <div class="type"><div class="l">Sake shops</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Shimadaya, Miya-Mirai</div>
+        <div class="dt">All 28 breweries in the prefecture. Taste before you buy, three glasses from ¥1,200.</div>
+        <div class="st"><span class="open y"><i></i>Open until 20:30</span></div></div></div>
+
+      <div class="type"><div class="l">Eat &amp; drink</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Ippachi</div>
+        <div class="dt">Counter kappō, everything cooked in front of you.</div>
+        <div class="st"><span class="open n"><i></i>Opens 17:30</span><span class="tag warn">Closed Sun</span><span class="tag p">¥2–3k</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Masashi, Miyajima Honten</div>
+        <div class="dt">Gyoza and nothing else, about ¥300 a plate.</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag warn">Queue</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Mushu OGAWA</div>
+        <div class="dt">The only bar in Tochigi with a national listing.</div>
+        <div class="st"><span class="open n"><i></i>Opens 19:00</span></div></div></div>
+
+      <div class="type"><div class="l">Food</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Fresspo Utsunomiya Ichiba</div>
+        <div class="dt">Market beside the wholesale market. Tuna, butchers, gyoza.</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag">Mornings best</span></div></div></div>
+
+      <!-- MASHIKO -->
+      <div class="place"><div class="n">Mashiko</div><div class="c">5</div><div class="go">Map →</div></div>
+      <div class="placesub">Four of the five are on one street. An hour from Utsunomiya by bus.</div>
+
+      <div class="type"><div class="l">Shops &amp; makers</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tōkō</div>
+        <div class="dt">Forty potters in a stone warehouse, with a section of nothing but sake cups.</div>
+        <div class="st"><span class="open y"><i></i>Open until 18:00</span><span class="tag">Ships abroad</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Zengo, at Yamani Ōtsuka</div>
+        <div class="dt">Living National Treasures, and you can buy it.</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag p">Expensive</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Taiseigama</div>
+        <div class="dt">Buy at the kiln, from the family that fires it.</div>
+        <div class="st"><span class="open n"><i></i>Call first</span><span class="tag">Out of town</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Starnet</div>
+        <div class="dt">Ceramics, food and a café, all sourced within 40km.</div>
+        <div class="st"><span class="open y"><i></i>Open until 17:00</span><span class="tag warn">Closed Thu</span></div></div></div>
+
+      <div class="type"><div class="l">Breweries</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tonoike</div>
+        <div class="dt">The only sake brewery in the pottery town.</div>
+        <div class="st"><span class="open y"><i></i>Open until 17:00</span></div></div></div>
+
+      <!-- NIKKO -->
+      <div class="place"><div class="n">Nikko</div><div class="c">4</div><div class="go">Map →</div></div>
+      <div class="placesub">Three in the town, one two hours further up the valley.</div>
+
+      <div class="type"><div class="l">Shops &amp; makers</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Ebiya Chōzō</div>
+        <div class="dt">Yuba by hand since 1872. Buy a pack to take home.</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Uwasawa Umetarō Shōten</div>
+        <div class="dt">Tamari-zuke. Nothing sold more than three days old.</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+
+      <div class="type"><div class="l">Eat &amp; drink</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Zen</div>
+        <div class="dt">A whole meal built on yuba. Lunch is under ¥3,000.</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag warn">Book ahead</span></div></div></div>
+
+      <div class="type"><div class="l">Sake shops</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Yuzawaya Saketen</div>
+        <div class="dt">Ten seats in a liquor shop, up in Yunishigawa. Taste before you buy.</div>
+        <div class="st"><span class="open y"><i></i>Open until 19:00</span><span class="tag warn">2 hrs from Nikko stn</span></div></div></div>
+
+      <div class="place"><div class="n">Nasukarasuyama</div><div class="c">1</div><div class="go">Map →</div></div>
+      <div class="type"><div class="l">Breweries</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Shimazaki — the tunnel</div>
+        <div class="dt">600m of wartime tunnel full of ageing sake. ¥200.</div>
+        <div class="st"><span class="open n"><i></i>Weekends only</span></div></div></div>
+
+      <div class="footer"><div class="glyph">· · ·</div></div>
+    </div>
+
+    <div class="bnav">
+      <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+      <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+      <div class="bcell on"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><div class="bl">Saved</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 2 · ONE TOWN ===================== -->
+<div class="col">
+  <div class="col-cap">2 · One town</div>
+  <div class="col-sub">What you tap when you're actually standing in Mashiko. Map, walking order, and the four types you cover.</div>
+  <div class="phone">
+    <div class="mast">
+      <div class="status"></div>
+      <div class="appbar">
+        <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="abC">SAKE<i>YŌ</i></div>
+        <div class="abR"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+      </div>
+      <div class="tmast">
+        <div class="ovr">Saved · Tochigi</div>
+        <h2>Mashiko</h2>
+        <div class="tmeta">Five saved. Four of them are on Jōnaizaka, a 500m street.</div>
+      </div>
+      <div class="segs">
+        <div class="seg on">Saved</div>
+        <div class="seg">All in Mashiko</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="map">
+        <div class="pin" style="left:26%;top:34%"></div><div class="lbl" style="left:31%;top:31%">Tōkō</div>
+        <div class="pin" style="left:33%;top:44%"></div><div class="lbl" style="left:38%;top:41%">Zengo</div>
+        <div class="pin" style="left:29%;top:55%"></div><div class="lbl" style="left:34%;top:52%">Starnet</div>
+        <div class="pin" style="left:44%;top:66%"></div><div class="lbl" style="left:49%;top:63%">Tonoike</div>
+        <div class="pin" style="left:74%;top:20%"></div><div class="lbl" style="left:52%;top:17%">Taiseigama</div>
+        <div class="note">Jōnaizaka runs top-left to centre</div>
+      </div>
+
+      <div class="walk">
+        <div class="h">Walk them in this order</div>
+        <p>Tōkō first so you know what you're looking at, the expensive room next, then the kiln, then the brewery
+           before it shuts at five.</p>
+        <div class="steps">
+          <span class="step">Tōkō</span><span class="arr">→</span>
+          <span class="step">Zengo</span><span class="arr">→</span>
+          <span class="step">Starnet</span><span class="arr">→</span>
+          <span class="step">Taiseigama</span><span class="arr">→</span>
+          <span class="step">Tonoike</span>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip on">All 5</span>
+        <span class="chip">Shops &amp; makers</span>
+        <span class="chip">Breweries</span>
+        <span class="chip">Open now</span>
+      </div>
+
+      <div class="type"><div class="l">Shops &amp; makers</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tōkō</div>
+        <div class="dt">Forty potters, a section of nothing but sake cups, and a new exhibition every fortnight.</div>
+        <div class="st"><span class="open y"><i></i>Open until 18:00</span><span class="tag">Ships abroad</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Zengo, at Yamani Ōtsuka</div>
+        <div class="dt">Hamada, Shimaoka, Matsuzaki Ken. Two minutes from Tōkō.</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag p">Expensive</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Starnet</div>
+        <div class="dt">Ceramics, food, clothes and a café. Somewhere to eat between the shops.</div>
+        <div class="st"><span class="open y"><i></i>Open until 17:00</span><span class="tag warn">Closed Thu</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Taiseigama</div>
+        <div class="dt">Wood-fired only, red pine split in the yard. Buy from the family.</div>
+        <div class="st"><span class="open n"><i></i>Call first</span><span class="tag warn">15 min drive</span></div></div></div>
+
+      <div class="type"><div class="l">Breweries</div><div class="rule"></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tonoike</div>
+        <div class="dt">The only sake brewery in the pottery town. Buy the cup first, then come and fill it.</div>
+        <div class="st"><span class="open y"><i></i>Open until 17:00</span></div></div></div>
+
+      <div class="type"><div class="l">Eat &amp; drink</div><div class="rule"></div></div>
+      <div class="empty">
+        <div class="n">Nothing saved yet</div>
+        <div class="d">We haven't covered anywhere to eat in Mashiko. Starnet does food if you're stuck.</div>
+      </div>
+
+      <div class="footer"><div class="glyph">· · ·</div></div>
+    </div>
+
+    <div class="bnav">
+      <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+      <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+      <div class="bcell on"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><div class="bl">Saved</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 3 · BY TYPE ===================== -->
+<div class="col">
+  <div class="col-cap">3 · The other cut — by type</div>
+  <div class="col-sub">Same sixteen places, sorted the other way. For the person who knows they want to buy sake and doesn't care which town.</div>
+  <div class="phone">
+    <div class="mast">
+      <div class="status"></div>
+      <div class="appbar">
+        <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="abC">SAKE<i>YŌ</i></div>
+        <div class="abR"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/></svg></div>
+      </div>
+      <div class="tmast">
+        <div class="ovr">Tochigi</div>
+        <h2>Saved</h2>
+        <div class="tmeta">Sixteen places across six towns.</div>
+      </div>
+      <div class="segs">
+        <div class="seg">By place</div>
+        <div class="seg on">By type</div>
+        <div class="seg">Map</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <div class="place"><div class="n">Sake shops</div><div class="c">3</div></div>
+      <div class="placesub">Where to buy bottles.</div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Shimadaya, Miya-Mirai</div>
+        <div class="dt">Utsunomiya · all 28 breweries, taste before you buy</div>
+        <div class="st"><span class="open y"><i></i>Open until 20:30</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Yuzawaya Saketen</div>
+        <div class="dt">Yunishigawa · ten seats, bottles made for the village</div>
+        <div class="st"><span class="open y"><i></i>Open until 19:00</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Hoshidaya Saketen</div>
+        <div class="dt">Kurobane · open since 1921, more Kyokkō than anywhere</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+
+      <div class="place"><div class="n">Eat &amp; drink</div><div class="c">5</div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Ippachi</div>
+        <div class="dt">Utsunomiya · counter kappō, ¥2,000–3,000</div>
+        <div class="st"><span class="open n"><i></i>Opens 17:30</span><span class="tag warn">Closed Sun</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Zen</div>
+        <div class="dt">Nikko · a whole meal built on yuba</div>
+        <div class="st"><span class="open y"><i></i>Open</span><span class="tag warn">Book ahead</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Masashi, Miyajima Honten</div>
+        <div class="dt">Utsunomiya · gyoza, about ¥300 a plate</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Mushu OGAWA</div>
+        <div class="dt">Utsunomiya · the only bar with a national listing</div>
+        <div class="st"><span class="open n"><i></i>Opens 19:00</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Kumaō</div>
+        <div class="dt">Ujiie · skewers, and they sell Senkin from up the road</div>
+        <div class="st"><span class="open n"><i></i>Opens 17:00</span></div></div></div>
+
+      <div class="place"><div class="n">Shops &amp; makers</div><div class="c">6</div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tōkō</div>
+        <div class="dt">Mashiko · forty potters, a section of sake cups</div>
+        <div class="st"><span class="open y"><i></i>Open until 18:00</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Zengo</div>
+        <div class="dt">Mashiko · Living National Treasures</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Ebiya Chōzō</div>
+        <div class="dt">Nikko · yuba by hand since 1872</div>
+        <div class="st"><span class="open y"><i></i>Open</span></div></div></div>
+
+      <div class="place"><div class="n">Breweries</div><div class="c">2</div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Shimazaki — the tunnel</div>
+        <div class="dt">Nasukarasuyama · 600m of tunnel, ¥200</div>
+        <div class="st"><span class="open n"><i></i>Weekends only</span></div></div></div>
+      <div class="row"><div class="thumb"></div><div class="bd">
+        <div class="nm">Tonoike</div>
+        <div class="dt">Mashiko · the only brewery in the pottery town</div>
+        <div class="st"><span class="open y"><i></i>Open until 17:00</span></div></div></div>
+
+      <div class="footer"><div class="glyph">· · ·</div></div>
+    </div>
+
+    <div class="bnav">
+      <div class="bcell"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><div class="bl">Home</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg><div class="bl">Japan</div></div>
+      <div class="fabslot"><div class="fab"><svg viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></svg></div></div>
+      <div class="bcell on"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><div class="bl">Saved</div></div>
+      <div class="bcell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="bl">You</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="notes">
+  <h3>What changed</h3>
+  <ul>
+    <li><b>No schedule.</b> No times of day, no travel legs, no cost estimate, no day tabs. The app doesn't know
+       about your hotel or the shrine you're seeing at eleven, so it can't plan a day and shouldn't act like it can.</li>
+    <li><b>Two cuts of the same sixteen places.</b> By place for when you're standing somewhere; by type for when
+       you know you want to buy sake and don't care which town.</li>
+    <li><b>Types are only your four.</b> Sake shops, eat &amp; drink, shops &amp; makers, breweries. Nothing about
+       shrines, gardens or waterfalls, because that isn't what this app is for.</li>
+    <li><b>Opening hours are the payoff.</b> "Closed Sundays", "Weekends only", "Open until 19:00", "Call first" —
+       those come off the venue pages and no general travel app has them for a ten-seat shop in a mountain village.</li>
+    <li><b>The tab is now Saved, not Trips.</b> People save things while reading, weeks before they book anything.</li>
+  </ul>
+
+  <h3>The one ordering feature kept</h3>
+  <ul>
+    <li><b>Walk them in this order</b>, within a single town. Tōkō, Zengo, Starnet, Taiseigama, Tonoike — a route
+       through a place, not a plan for a day, and it carries one piece of reasoning: brewery last because it shuts
+       at five.</li>
+  </ul>
+
+  <h3>Worth noticing</h3>
+  <ul>
+    <li>The empty state at the bottom of Mashiko is honest — we have no restaurant there. Better to say so than to
+       pad it with something we haven't been to.</li>
+  </ul>
+</div>
+
+<!-- phone-shell screen mode: only active when this page is inside phone.html -->
+<style>
+/* Bottle cut-outs are tall PNGs in a 226x196 card; cover crops them to a slice.
+   Contain shows the whole bottle inside the black. Applies everywhere, not just the shell. */
+.bcardx .shot .imgslot img{object-fit:contain!important;padding:14px 12px}
+</style>
+<script>
+// A contained bottle no longer covers the slot, so the wanted-filename label would
+// show through. Hide it only once the image has really loaded; an empty slot still
+// shows the filename, which is the point of it.
+(function(){
+  function sweep(){
+    var slots = document.querySelectorAll('.bcardx .shot .imgslot');
+    for (var i = 0; i < slots.length; i++){
+      (function(slot){
+        var img = slot.querySelector('img'), fn = slot.querySelector('.fn');
+        if (!img || !fn) return;
+        function upd(){ if (img.complete && img.naturalWidth > 0) fn.style.display = 'none'; }
+        img.addEventListener('load', upd);
+        upd();
+      })(slots[i]);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sweep);
+  else sweep();
+})();
+</script>
+<style>
+html.inphone,html.inphone body{height:100%;margin:0;padding:0;overflow:hidden;background:#F5F0EB}
+html.inphone .page-head,html.inphone .notes,html.inphone .col-cap,html.inphone .col-sub{display:none!important}
+html.inphone .stage{display:block!important;gap:0!important;margin:0!important;
+  flex-wrap:nowrap!important;height:100%!important}
+html.inphone .col{width:100%!important;margin:0!important;height:100%!important}
+/* height must be a real box, not a percentage of an auto-height parent, or the
+   .scroll child never gets a bounded height and the screen can't scroll. */
+html.inphone .phone{width:100%!important;height:100vh!important;max-width:none!important;
+  border-radius:0!important;box-shadow:none!important}
+html.inphone .scroll{-webkit-overflow-scrolling:touch}
+html.inphone .status{display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 6px;color:#fff;font-size:13.5px;font-weight:600;letter-spacing:.2px}
+html.inphone .status .sbr{display:flex;align-items:center;gap:5px}
+html.inphone .status svg{display:block;fill:#fff}
+html.inphone .abL{cursor:pointer}
+html.inphone-plain body{margin:0}
+/* a list row that has its own detail screen in this file */
+html.inphone .sy-tap{cursor:pointer}
+html.inphone .sy-tap:active{background:rgba(240,61,77,.06)}
+html.inphone .sy-tap .ename,html.inphone .sy-tap .rname,
+html.inphone .sy-tap .pname,html.inphone .sy-tap .n{color:#9B1B1B}
+html.inphone .sy-go{display:inline-flex;align-items:center;gap:5px;margin-top:9px;
+  font-size:9.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#9B1B1B;
+  border:1px solid rgba(155,27,27,.4);border-radius:999px;padding:4px 10px;line-height:1}
+</style>
+<script>
+(function(){
+  if (window.self === window.top) return;              // opened directly: change nothing
+  var doc = document.documentElement;
+  doc.classList.add('inphone');
+
+  function boot(){
+    var cols = [].slice.call(document.querySelectorAll('.stage > .col'));
+    if (!cols.length){
+      // Pages with no deck (the index) just scroll normally inside the frame.
+      doc.classList.remove('inphone');
+      doc.classList.add('inphone-plain');
+      parent.postMessage({ type: 'sy', file: location.pathname.split('/').pop() || 'index.html',
+                           index: 0, count: 1, title: 'Index', caps: [] }, '*');
+      return;
+    }
+
+    // Which screen of this page? ?s=N, or whichever one holds the #anchor.
+    var want = 0;
+    var m = /[?&]s=(\d+)/.exec(location.search);
+    if (m) want = Math.min(parseInt(m[1], 10), cols.length - 1);
+    if (location.hash.length > 1){
+      try {
+        var el = document.querySelector(location.hash);
+        if (el) for (var i = 0; i < cols.length; i++){
+          if (cols[i].contains(el)) { want = i; break; }
+        }
+      } catch (e) {}
+    }
+    cols.forEach(function(c, i){ if (i !== want) c.style.display = 'none'; });
+
+    // Real status bar, painted into the strip the design already reserves.
+    var SIG = '<svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.6" y="5.5" width="3" height="5.5" rx="1"/><rect x="9.2" y="3" width="3" height="8" rx="1"/><rect x="13.8" y="0" width="3" height="11" rx="1"/></svg>';
+    var WIFI = '<svg width="16" height="11" viewBox="0 0 16 11"><path d="M8 10.6 6.1 8.4a2.9 2.9 0 0 1 3.8 0z"/><path d="M8 5.4c1.3 0 2.5.5 3.4 1.3l1.3-1.5A7.2 7.2 0 0 0 8 3.4a7.2 7.2 0 0 0-4.7 1.8l1.3 1.5A5.1 5.1 0 0 1 8 5.4z"/><path d="M8 .6c2.5 0 4.8.9 6.6 2.4l1.2-1.4A12 12 0 0 0 8-1.4 12 12 0 0 0 .2 1.6l1.2 1.4A10 10 0 0 1 8 .6z"/></svg>';
+    var BATT = '<svg width="26" height="12" viewBox="0 0 26 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3.2" fill="none" stroke="#fff" stroke-opacity=".45"/><rect x="2.2" y="2.2" width="17.6" height="7.6" rx="2"/><path d="M23.4 4.2v3.6c1-.3 1.6-.9 1.6-1.8s-.6-1.5-1.6-1.8z" fill-opacity=".45"/></svg>';
+
+    var bars = document.querySelectorAll('.status');
+    function paint(){
+      var d = new Date();
+      var h = d.getHours() % 12; if (h === 0) h = 12;
+      var t = h + ':' + String(d.getMinutes()).padStart(2, '0');
+      for (var i = 0; i < bars.length; i++){
+        bars[i].innerHTML = '<span>' + t + '</span><span class="sbr">' + SIG + WIFI + BATT + '</span>';
+      }
+    }
+    paint();
+    setInterval(paint, 20000);
+
+    // Tapping Tochigi in the browse sheet opens the Tochigi screen (the col holding the
+    // prefecture masthead). The rows are plain divs in the source; this only adds
+    // behaviour inside the phone shell, and only for the one prefecture that exists.
+    var dest = -1;
+    for (var c = 0; c < cols.length; c++){
+      if (c !== want && cols[c].querySelector('.pmast')) { dest = c; break; }
+    }
+    var hot = document.querySelectorAll('.ddrow.hot');
+    for (var r = 0; r < hot.length; r++){
+      hot[r].style.cursor = 'pointer';
+      hot[r].addEventListener('click', function(){
+        if (dest >= 0){
+          location.href = location.pathname + '?s=' + dest;
+        } else {
+          var dd = this.closest('[data-dd]');
+          if (dd) dd.classList.remove('open');
+        }
+      });
+    }
+
+    // Rows whose detail screen lives in this same file become tappable and get a marker.
+    // Matched on the exact title only (or title + ", place"), never fuzzily.
+    function norm(s){ return s.replace(/\s+/g, ' ').trim().toLowerCase(); }
+    var details = [];
+    for (var k = 0; k < cols.length; k++){
+      if (k === want) continue;
+      var h1 = cols[k].querySelector('h1');
+      if (h1 && norm(h1.textContent).length >= 3) details.push({ i: k, t: norm(h1.textContent) });
+    }
+    if (details.length){
+      var names = cols[want].querySelectorAll('.ename,.rname,.pname,.n');
+      for (var q = 0; q < names.length; q++){
+        var nm = names[q], txt = norm(nm.textContent), hit = null;
+        for (var z = 0; z < details.length; z++){
+          var T = details[z].t;
+          if (txt === T || txt.indexOf(T + ',') === 0) { hit = details[z]; break; }
+        }
+        if (!hit) continue;
+        var row = nm.closest('.erow,.prow,.row,.srow,.lrow,.shopcard') || nm.parentElement;
+        row.classList.add('sy-tap');
+        var chip = document.createElement('span');
+        chip.className = 'sy-go';
+        chip.textContent = 'Open ›';
+        nm.parentElement.appendChild(chip);
+        (function(dest){
+          row.addEventListener('click', function(e){
+            if (e.target.closest('a')) return;             // real links still win
+            location.href = location.pathname + '?s=' + dest;
+          });
+        })(hit.i);
+      }
+    }
+
+    // The app bar's back chevron should actually go back.
+    var backs = document.querySelectorAll('.abL');
+    for (var b = 0; b < backs.length; b++){
+      backs[b].addEventListener('click', function(){
+        parent.postMessage({ type: 'sy-back' }, '*');
+      });
+    }
+
+    // Tell the shell what it's showing.
+    var file = location.pathname.split('/').pop() || 'index.html';
+    parent.postMessage({
+      type: 'sy',
+      file: file,
+      index: want,
+      count: cols.length,
+      title: document.title.replace(/^SakeY[ōo]\s*[—-]\s*/, ''),
+      caps: cols.map(function(c){
+        var e = c.querySelector('.col-cap');
+        return e ? e.textContent.trim() : '';
+      })
+    }, '*');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+
+</body>
+</html>
