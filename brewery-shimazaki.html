@@ -258,6 +258,9 @@ window.__imgfall=function(el){
 /* Bottle cut-outs are tall PNGs in a 226x196 card; cover crops them to a slice.
    Contain shows the whole bottle inside the black. Applies everywhere, not just the shell. */
 .bcardx .shot .imgslot img{object-fit:contain!important;padding:14px 12px}
+/* saved-screen thumbnails: drop the placeholder stripes once a photo is in */
+.thumb.has-img{background:none!important}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
 </style>
 <script>
 // A contained bottle no longer covers the slot, so the wanted-filename label would
