@@ -598,5 +598,116 @@ window.__imgfall=function(el){
   el.remove();
 };
 </script>
+<!-- phone-shell screen mode: only active when this page is inside phone.html -->
+<style>
+html.inphone,html.inphone body{height:100%;margin:0;padding:0;overflow:hidden;background:#F5F0EB}
+html.inphone .page-head,html.inphone .notes,html.inphone .col-cap,html.inphone .col-sub{display:none!important}
+html.inphone .stage{display:block!important;gap:0!important;margin:0!important;flex-wrap:nowrap!important}
+html.inphone .col{width:100%!important;margin:0!important}
+html.inphone .phone{width:100%!important;height:100%!important;max-width:none!important;
+  border-radius:0!important;box-shadow:none!important}
+html.inphone .status{display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 6px;color:#fff;font-size:13.5px;font-weight:600;letter-spacing:.2px}
+html.inphone .status .sbr{display:flex;align-items:center;gap:5px}
+html.inphone .status svg{display:block;fill:#fff}
+html.inphone .abL{cursor:pointer}
+html.inphone-plain body{margin:0}
+</style>
+<script>
+(function(){
+  if (window.self === window.top) return;              // opened directly: change nothing
+  var doc = document.documentElement;
+  doc.classList.add('inphone');
+
+  function boot(){
+    var cols = [].slice.call(document.querySelectorAll('.stage > .col'));
+    if (!cols.length){
+      // Pages with no deck (the index) just scroll normally inside the frame.
+      doc.classList.remove('inphone');
+      doc.classList.add('inphone-plain');
+      parent.postMessage({ type: 'sy', file: location.pathname.split('/').pop() || 'index.html',
+                           index: 0, count: 1, title: 'Index', caps: [] }, '*');
+      return;
+    }
+
+    // Which screen of this page? ?s=N, or whichever one holds the #anchor.
+    var want = 0;
+    var m = /[?&]s=(\d+)/.exec(location.search);
+    if (m) want = Math.min(parseInt(m[1], 10), cols.length - 1);
+    if (location.hash.length > 1){
+      try {
+        var el = document.querySelector(location.hash);
+        if (el) for (var i = 0; i < cols.length; i++){
+          if (cols[i].contains(el)) { want = i; break; }
+        }
+      } catch (e) {}
+    }
+    cols.forEach(function(c, i){ if (i !== want) c.style.display = 'none'; });
+
+    // Real status bar, painted into the strip the design already reserves.
+    var SIG = '<svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.6" y="5.5" width="3" height="5.5" rx="1"/><rect x="9.2" y="3" width="3" height="8" rx="1"/><rect x="13.8" y="0" width="3" height="11" rx="1"/></svg>';
+    var WIFI = '<svg width="16" height="11" viewBox="0 0 16 11"><path d="M8 10.6 6.1 8.4a2.9 2.9 0 0 1 3.8 0z"/><path d="M8 5.4c1.3 0 2.5.5 3.4 1.3l1.3-1.5A7.2 7.2 0 0 0 8 3.4a7.2 7.2 0 0 0-4.7 1.8l1.3 1.5A5.1 5.1 0 0 1 8 5.4z"/><path d="M8 .6c2.5 0 4.8.9 6.6 2.4l1.2-1.4A12 12 0 0 0 8-1.4 12 12 0 0 0 .2 1.6l1.2 1.4A10 10 0 0 1 8 .6z"/></svg>';
+    var BATT = '<svg width="26" height="12" viewBox="0 0 26 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3.2" fill="none" stroke="#fff" stroke-opacity=".45"/><rect x="2.2" y="2.2" width="17.6" height="7.6" rx="2"/><path d="M23.4 4.2v3.6c1-.3 1.6-.9 1.6-1.8s-.6-1.5-1.6-1.8z" fill-opacity=".45"/></svg>';
+
+    var bars = document.querySelectorAll('.status');
+    function paint(){
+      var d = new Date();
+      var h = d.getHours() % 12; if (h === 0) h = 12;
+      var t = h + ':' + String(d.getMinutes()).padStart(2, '0');
+      for (var i = 0; i < bars.length; i++){
+        bars[i].innerHTML = '<span>' + t + '</span><span class="sbr">' + SIG + WIFI + BATT + '</span>';
+      }
+    }
+    paint();
+    setInterval(paint, 20000);
+
+    // Tapping Tochigi in the browse sheet opens the Tochigi screen (the col holding the
+    // prefecture masthead). The rows are plain divs in the source; this only adds
+    // behaviour inside the phone shell, and only for the one prefecture that exists.
+    var dest = -1;
+    for (var c = 0; c < cols.length; c++){
+      if (c !== want && cols[c].querySelector('.pmast')) { dest = c; break; }
+    }
+    var hot = document.querySelectorAll('.ddrow.hot');
+    for (var r = 0; r < hot.length; r++){
+      hot[r].style.cursor = 'pointer';
+      hot[r].addEventListener('click', function(){
+        if (dest >= 0){
+          location.href = location.pathname + '?s=' + dest;
+        } else {
+          var dd = this.closest('[data-dd]');
+          if (dd) dd.classList.remove('open');
+        }
+      });
+    }
+
+    // The app bar's back chevron should actually go back.
+    var backs = document.querySelectorAll('.abL');
+    for (var b = 0; b < backs.length; b++){
+      backs[b].addEventListener('click', function(){
+        parent.postMessage({ type: 'sy-back' }, '*');
+      });
+    }
+
+    // Tell the shell what it's showing.
+    var file = location.pathname.split('/').pop() || 'index.html';
+    parent.postMessage({
+      type: 'sy',
+      file: file,
+      index: want,
+      count: cols.length,
+      title: document.title.replace(/^SakeY[ōo]\s*[—-]\s*/, ''),
+      caps: cols.map(function(c){
+        var e = c.querySelector('.col-cap');
+        return e ? e.textContent.trim() : '';
+      })
+    }, '*');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+
 </body>
 </html>
