@@ -31,6 +31,8 @@
   .scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
   .scroll::-webkit-scrollbar{display:none}
 
+  a{color:inherit;text-decoration:none;display:block}
+  a.row,a.vrow,a.erow,a.prow,a.lrow{display:flex}
   .mast{background:var(--black);flex-shrink:0}
   .status{height:38px}
   .appbar{min-height:52px;display:flex;align-items:center;padding:14px 18px}
@@ -174,7 +176,7 @@
       <div class="mast">
         <div class="status"></div>
         <div class="appbar">
-          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abL"><a href="tochigi-prefecture-mockup-v2.html" style="display:flex"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a></div>
           <div class="abC">SAKE<i>YŌ</i></div>
           <div class="abR"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div>
         </div>
@@ -233,7 +235,7 @@
 
         <div class="ghead"><div class="m">Restaurants with good sake</div><div class="rule"></div></div>
 
-        <div class="prow">
+        <a class="prow" href="venue-ippachi.html">
           <div class="pthumb imgslot"><img src="images/place-ippachi.webp" alt="" onerror="__imgfall(this)"><span class="fn">place-ippachi.jpg</span></div>
           <div class="pbody">
             <div class="pkind">Kappō · Utsunomiya</div>
@@ -241,7 +243,7 @@
             <div class="pmeta">The second-highest-rated Japanese restaurant in the prefecture, and dinner runs ¥2,000–3,000. You sit at the counter and watch it cooked in front of you. Book ahead.</div>
             <div class="ptags"><span class="tag p">¥2,000–3,000</span><span class="tag warn">Book ahead</span></div>
           </div>
-        </div>
+        </a>
 
         <div class="prow">
           <div class="pthumb imgslot"><img src="images/place-zen-nikko.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-zen-nikko.jpg</span></div>
@@ -306,7 +308,7 @@
       <div class="mast">
         <div class="status"></div>
         <div class="appbar">
-          <div class="abL"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div class="abL"><a href="tochigi-prefecture-mockup-v2.html" style="display:flex"><svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a></div>
           <div class="abC">SAKE<i>YŌ</i></div>
           <div class="abR">
             <svg class="ic" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
@@ -456,16 +458,16 @@
           <div><div class="lkind">Eat · 10 min</div><div class="n">Masashi, Miyajima Honten</div>
             <div class="m">Gyoza at about ¥300 a plate, and nothing else on the menu.</div></div>
         </div>
-        <div class="lrow">
+        <a class="lrow" href="venue-ippachi.html">
           <div class="lthumb imgslot"><img src="images/place-mushu-ogawa.jpg" alt="" onerror="__imgfall(this)"><span class="fn">place-mushu-ogawa.jpg</span></div>
           <div><div class="lkind">Drink · 15 min</div><div class="n">Mushu OGAWA</div>
             <div class="m">A proper bar if you want to sit down and make a night of it.</div></div>
-        </div>
-        <div class="lrow">
+        </a>
+        <a class="lrow" href="brewery-shimazaki.html">
           <div class="lthumb imgslot"><img src="images/brewery-senkin.webp" alt="" onerror="__imgfall(this)"><span class="fn">brewery-senkin.jpg</span></div>
           <div><div class="lkind">Brewery · 30 min by train</div><div class="n">Senkin, Sakura</div>
             <div class="m">Thirty minutes by train. If the three-way set won you over, go and see where it's made.</div></div>
-        </div>
+        </a>
 
         <div class="footer"><div class="glyph">· · ·</div></div>
       </div>

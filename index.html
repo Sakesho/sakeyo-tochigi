@@ -1,19 +1,110 @@
-<meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Tochigi Project</title>
-<h1>Tochigi Project</h1>
-<h2>Prefecture</h2><ul>
-<li><a href="tochigi-prefecture-mockup-v2.html">SakeYō — Tochigi prefecture page (v2)</a></li>
-</ul>
-<h2>Sections</h2><ul>
-<li><a href="eat-drink-tochigi.html">SakeYō — Where to drink it</a></li>
-<li><a href="events-tochigi.html">SakeYō — Events</a></li>
-<li><a href="shop-tochigi.html">SakeYō — Where to buy</a></li>
-</ul>
-<h2>Articles & details</h2><ul>
-<li><a href="article-yunishigawa.html">SakeYō — Hot water, warm sake</a></li>
-<li><a href="artisan-matsuzaki.html">SakeYō — Matsuzaki Ken</a></li>
-<li><a href="brewery-shimazaki.html">SakeYō — Shimazaki</a></li>
-<li><a href="brewery-watanabe-kyokko.html">SakeYō — Kyokkō</a></li>
-<li><a href="food-yuba.html">SakeYō — Yuba</a></li>
-<li><a href="venue-ippachi.html">SakeYō — Ippachi</a></li>
-</ul>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SakeYō — Tochigi</title>
+<link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,600,700&f[]=sentient@400,500&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0d131a;--crimson:#9B1B1B;--crimson-bright:#F03D4D;--cream:#F5F0EB;
+    --ink:#101820;--mute:#5F5E5A;--faint:#8A8880;--hair:rgba(16,24,32,.10);
+    --sans:'Supreme',system-ui,sans-serif;--serif:'Sentient',Georgia,serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .top{background:var(--black);padding:38px 24px 30px}
+  .word{font-weight:700;font-size:14px;letter-spacing:3.08px;color:#fff;text-align:center}
+  .word i{font-style:normal;color:var(--crimson-bright)}
+  .top h1{font-family:var(--serif);font-weight:400;font-size:32px;line-height:36px;color:var(--cream);
+    margin-top:22px;letter-spacing:-.5px;max-width:560px}
+  .top p{font-size:14px;line-height:21px;color:rgba(245,240,235,.55);margin-top:12px;max-width:520px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 24px 60px}
+  .grp{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--crimson);
+    font-weight:600;padding:30px 0 4px;display:flex;align-items:center;gap:12px}
+  .grp::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .row{display:flex;align-items:baseline;gap:12px;padding:14px 0;border-bottom:1px solid rgba(16,24,32,.06)}
+  .row:hover .n{color:var(--crimson)}
+  .n{font-size:16px;font-weight:600;letter-spacing:-.25px}
+  .d{font-size:13px;line-height:18px;color:var(--mute);margin-top:3px}
+  .c{margin-left:auto;font-size:11px;color:var(--faint);white-space:nowrap;font-weight:500}
+  .note{margin-top:34px;border-left:2px solid var(--crimson);padding:4px 0 4px 16px;
+    font-size:13px;line-height:19px;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="word">SAKE<i>YŌ</i></div>
+  <div class="wrap" style="padding-bottom:0">
+    <h1>Tochigi</h1>
+    <p>Ten screens. Start with the prefecture page and tap through — the hero article, the section
+       lists, and the individual reviews and profiles all link from it.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="grp">Start here</div>
+  <a class="row" href="tochigi-prefecture-mockup-v2.html">
+    <div><div class="n">Tochigi prefecture page</div>
+      <div class="d">The main screen, with the dropdown alongside it.</div></div>
+    <div class="c">19 images</div>
+  </a>
+
+  <div class="grp">Sections</div>
+  <a class="row" href="events-tochigi.html">
+    <div><div class="n">What's on</div>
+      <div class="d">Seven events, plus two full event pages.</div></div>
+    <div class="c">23 images</div>
+  </a>
+  <a class="row" href="eat-drink-tochigi.html">
+    <div><div class="n">Where we eat and drink</div>
+      <div class="d">Fourteen places, plus the Shimadaya review.</div></div>
+    <div class="c">14 images</div>
+  </a>
+  <a class="row" href="shop-tochigi.html">
+    <div><div class="n">Where we buy sake, and where we shop</div>
+      <div class="d">Twelve shops, plus Tōkō in Mashiko.</div></div>
+    <div class="c">15 images</div>
+  </a>
+
+  <div class="grp">Articles and profiles</div>
+  <a class="row" href="article-yunishigawa.html">
+    <div><div class="n">Hot water, warm sake</div>
+      <div class="d">Yunishigawa Onsen. The hero article.</div></div>
+    <div class="c">8 images</div>
+  </a>
+  <a class="row" href="venue-ippachi.html">
+    <div><div class="n">Ippachi</div>
+      <div class="d">Counter kappō in Utsunomiya, ¥2,000–3,000.</div></div>
+    <div class="c">5 images</div>
+  </a>
+  <a class="row" href="food-yuba.html">
+    <div><div class="n">Yuba</div>
+      <div class="d">What it is, and what to drink with it.</div></div>
+    <div class="c">5 images</div>
+  </a>
+  <a class="row" href="artisan-matsuzaki.html">
+    <div><div class="n">Matsuzaki Ken</div>
+      <div class="d">Potter, Mashiko. What to buy and where.</div></div>
+    <div class="c">6 images</div>
+  </a>
+  <a class="row" href="brewery-shimazaki.html">
+    <div><div class="n">Shimazaki</div>
+      <div class="d">The tunnel, and four bottles to try.</div></div>
+    <div class="c">4 images</div>
+  </a>
+  <a class="row" href="brewery-watanabe-kyokko.html">
+    <div><div class="n">Kyokkō</div>
+      <div class="d">Brewery profile in the three-point DNA format.</div></div>
+    <div class="c">3 images</div>
+  </a>
+
+  <div class="note">
+    Mockups. Prices, phone numbers and dates are placeholders unless noted on the page itself, and
+    every page carries a note at the bottom saying what is sourced and what is not.
+  </div>
+
+</div>
+</body>
+</html>
